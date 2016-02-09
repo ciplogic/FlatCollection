@@ -12,8 +12,8 @@ import static java.lang.System.out;
 public class RunBench {
     public static void main(String[] args) {
         int count = 500000;
-        ArrayListOfPoint millionPointsArray = new ArrayListOfPoint(count);
-        IntStream.range(0, 1).forEach(i -> {
+        ArrayListOfPoint millionPointsArray = new ArrayListOfPoint();
+        IntStream.range(0, 100).forEach(i -> {
                     setupValues(count, millionPointsArray);
                 }
         );
@@ -22,19 +22,17 @@ public class RunBench {
             points[i] = new Point();
         }
         IntStream.range(0, 100).forEach(i -> {
-
                     setupPoints(count, points);
                 }
         );
         {
             long t1 = System.currentTimeMillis();
-            /*
-            IntStream.range(0, 100000).forEach(i -> {
 
+            IntStream.range(0, 10000).forEach(i -> {
                         setupValues(count, millionPointsArray);
                     }
             );
-*/
+
             long t2 = System.currentTimeMillis();
             out.println("Time 1:" + (t2 - t1) + " ms.");
             int[] sumVal = {0};
@@ -48,7 +46,7 @@ public class RunBench {
         {
             long t1 = System.currentTimeMillis();
 
-            IntStream.range(0, 1).forEach(i -> {
+            IntStream.range(0, 10000).forEach(i -> {
                         setupPoints(count, points);
                     }
             );
@@ -75,6 +73,7 @@ public class RunBench {
     }
 
     private static void setupValues(int count, ArrayListOfPoint millionPointsArray) {
+        millionPointsArray.clear();
         FlatCursorPoint startIterator = millionPointsArray.getCursor();
         for (int i = 0; i < count; i++) {
             startIterator.add();

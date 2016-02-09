@@ -119,4 +119,14 @@ public class OsUtils {
             return new ArrayList<>();
         }
     }
+
+    public static String readAllText(String file) {
+        try {
+            byte[] data = Files.readAllBytes(Paths.get(file));
+            String result = new String(data, "UTF-8");
+            return result;
+        } catch (Exception ex) {
+            return "";
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package FlatCollections;
 
-public class FlatCursorPoint {
+import java.util.Iterator;
+
+public class FlatCursorPoint implements Iterator<FlatCursorPoint> {
     final ArrayListOfPoint _list;
     int _size;
     int _offset;
@@ -41,4 +43,13 @@ public class FlatCursorPoint {
         return _list.get(_offset+1);
     }
 
+    @Override
+    public boolean hasNext() {
+        return move();
+    }
+
+    @Override
+    public FlatCursorPoint next() {
+        return this;
+    }
 }
