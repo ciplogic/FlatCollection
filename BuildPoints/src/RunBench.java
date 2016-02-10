@@ -95,7 +95,7 @@ public class RunBench {
     private static int readPoints(ArrayListOfPoint millionPointsArray) {
         FlatCursorPoint startIterator = millionPointsArray.getCursor();
         int sum = 0;
-        while (startIterator.move()){
+        while (startIterator.move()) {
             sum += startIterator.getx();
             sum += startIterator.gety();
         }

@@ -6,9 +6,9 @@
 package com.khlud.ciprian.flatcollection.model;
 
 /**
- *
  * @author Ciprian
  */
 public class CompilerConfig {
     public CompilerTypeDescription[] Types = new CompilerTypeDescription[0];
+    public String outputPath;
 }

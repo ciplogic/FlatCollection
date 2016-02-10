@@ -1,6 +1,5 @@
 package com.khlud.ciprian.flatcollection.typedesc;
 
-import com.khlud.ciprian.flatcollection.utils.StringUtils;
 import com.sun.org.apache.xpath.internal.operations.String;
 
 /**
@@ -9,11 +8,13 @@ import com.sun.org.apache.xpath.internal.operations.String;
 public class TypeDescription {
     String _fullName;
     TypeCode _typeCode;
-    public TypeDescription(final String fullName){
+
+    public TypeDescription(final String fullName) {
         _fullName = fullName;
         _typeCode = TypeCode.Object;
     }
-    public TypeDescription(final TypeCode typeCode){
-        _typeCode= typeCode;
+
+    public TypeDescription(final TypeCode typeCode) {
+        _typeCode = typeCode;
     }
 }

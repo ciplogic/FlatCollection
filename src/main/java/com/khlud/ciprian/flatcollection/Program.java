@@ -6,13 +6,12 @@
 package com.khlud.ciprian.flatcollection;
 
 import com.google.gson.Gson;
-import com.khlud.ciprian.flatcollection.utils.OsUtils;
 import com.khlud.ciprian.flatcollection.model.CompilerConfig;
-import com.khlud.ciprian.flatcollection.model.CompilerTypeDescription;
+import com.khlud.ciprian.flatcollection.utils.OsUtils;
+
 import java.util.Arrays;
 
 /**
- *
  * @author Ciprian
  */
 public class Program {
@@ -23,7 +22,7 @@ public class Program {
         CompilerConfig config = readConfig();
 
         Arrays.stream(config.Types).forEach(typeDesc -> {
-            compiler.buildType(typeDesc.typeName);
+            compiler.buildType(typeDesc.typeName, config.outputPath);
         });
         System.out.println("Success");
     }

@@ -8,20 +8,21 @@ package com.khlud.ciprian.flatcollection.utils;
 import java.util.Collection;
 
 /**
- *
  * @author Ciprian
  */
 public class StringUtils {
-      public static final String substringBeforeLast(String _this, String delimiter){
+    public static final String substringBeforeLast(String _this, String delimiter) {
         int index = _this.lastIndexOf(delimiter);
         if (index == -1) return _this;
         return _this.substring(0, index);
     }
-      public static final String substringAfterLast(String _this, String delimiter){
+
+    public static final String substringAfterLast(String _this, String delimiter) {
         int index = _this.lastIndexOf(delimiter);
         if (index == -1) return _this;
-        return _this.substring(index+1);
+        return _this.substring(index + 1);
     }
+
     public static String removePrefix(String _this, String prefix) {
         if (_this.startsWith(prefix)) {
             return _this.substring(prefix.length());
@@ -34,12 +35,14 @@ public class StringUtils {
         String result = tokens[tokens.length - 1];
         return result;
     }
+
     public static String removeSuffix(String _this, String suffix) {
         if (_this.endsWith(suffix)) {
             return _this.substring(0, _this.length() - suffix.length());
         }
         return _this;
     }
+
     public static final String join(String separator, Collection<String> items) {
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;

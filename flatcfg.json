@@ -1,1 +1,9 @@
-{"Types":[{"typeName":"java.awt.Point"}]}
+{
+  "Types": [
+    {
+      "typeName": "java.awt.Point",
+      "mode": "Fields"
+    }
+  ],
+  "outputPath": "BuildPoints/src/FlatCollections"
+}

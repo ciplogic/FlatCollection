@@ -1,15 +1,13 @@
 package com.khlud.ciprian.flatcollection.utils;
 
+import com.google.common.base.Joiner;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -52,6 +50,10 @@ public class OsUtils {
             e.printStackTrace();
         }
         return GetStringsOfArray(resultList);
+    }
+
+    public static String pathCombine(String... args){
+        return Joiner.on("/").join(args);
     }
 
     private static String[] GetStringsOfArray(List<String> resultList) {
@@ -120,11 +122,23 @@ public class OsUtils {
         }
     }
 
-    public static String readAllText(String file) {
+    public static String readAllText(String fileName) {
+        StringBuilder sb = new StringBuilder();
         try {
-            byte[] data = Files.readAllBytes(Paths.get(file));
-            String result = new String(data, "UTF-8");
-            return result;
+            FileInputStream fstream = new FileInputStream(fileName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String strLine = br.readLine();
+            if (strLine != null) {
+                sb.append(strLine);
+            }
+
+//Read File Line By Line
+            while ((strLine = br.readLine()) != null) {
+                sb.append("\n");
+                sb.append(strLine);
+            }
+            return sb.toString();
         } catch (Exception ex) {
             return "";
         }

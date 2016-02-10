@@ -9,19 +9,20 @@ import spark.template.mustache.MustacheTemplateEngine;
 
 
 /**
- *
  * @author Ciprian
  */
 class FlatCompiler {
 
     MustacheTemplateEngine _engineArrayList;
-    public FlatCompiler(){
+
+    public FlatCompiler() {
         _engineArrayList = new MustacheTemplateEngine();
     }
-    void buildType(String typeName) {
+
+    void buildType(String typeName, String outputPath) {
 
         ClassExtracter extracter = new ClassExtracter();
-        extracter.build(typeName);
+        extracter.build(typeName, outputPath);
     }
-    
+
 }
