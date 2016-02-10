@@ -2,7 +2,6 @@ package com.khlud.ciprian.flatcollection;
 
 import com.khlud.ciprian.flatcollection.codegen.CodeGenerator;
 import com.khlud.ciprian.flatcollection.codegen.FlatClassDescription;
-import com.khlud.ciprian.flatcollection.model.CompileMode;
 import com.khlud.ciprian.flatcollection.utils.ReflectionResolver;
 
 import java.lang.reflect.Field;
@@ -17,9 +16,7 @@ import static com.khlud.ciprian.flatcollection.utils.OsUtils.writeAllText;
 /**
  * Created by Ciprian on 1/22/2016.
  */
-public class ClassExtracter {
-    CompileMode Mode = CompileMode.Fields;
-
+public class ClassExtractor {
     public void build(String typeName, String outputPath) {
 
         ReflectionResolver resolver = new ReflectionResolver(new ArrayList<>());
