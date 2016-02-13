@@ -2,6 +2,9 @@ package com.khlud.ciprian.flatcollection;
 
 import com.khlud.ciprian.flatcollection.codegen.CodeGenerator;
 import com.khlud.ciprian.flatcollection.codegen.FlatClassDescription;
+import com.khlud.ciprian.flatcollection.model.CompilerLayoutDescription;
+import com.khlud.ciprian.flatcollection.model.PrimitiveFieldCollector;
+import com.khlud.ciprian.flatcollection.typedesc.TypeCode;
 import com.khlud.ciprian.flatcollection.utils.ReflectionResolver;
 
 import java.lang.reflect.Field;
@@ -17,40 +20,29 @@ import static com.khlud.ciprian.flatcollection.utils.OsUtils.writeAllText;
  * Created by Ciprian on 1/22/2016.
  */
 public class ClassExtractor {
-    public void build(String typeName, String outputPath) {
+    public CompilerLayoutDescription build(String typeName) {
+        PrimitiveFieldCollector primitiveFieldCollector = new PrimitiveFieldCollector();
+        CompilerLayoutDescription layoutDescription = primitiveFieldCollector.build(typeName);
 
-        ReflectionResolver resolver = new ReflectionResolver(new ArrayList<>());
-        Class fullType = resolver.getClassByFullName(typeName);
-        List<Field> fields =
-                Arrays.stream(fullType.getFields())
-                .collect(Collectors.toList());
-        if (fields.size() != 0) {
-            buildFieldsStructure(fullType, fields, outputPath);
-        }
+        return layoutDescription;
     }
 
-    private void buildFieldsStructure(Class fullType, List<Field> fields, String outputPath) {
 
-        String fieldTypeName = fields.get(0).getType().getName();
-        List<String> fieldTypeNames = fields.stream()
-                .map(Field::getName)
-                .collect(Collectors.toList());
-
+    public static void WriteLayoutToPath(String outputPath, CompilerLayoutDescription layoutDescription) {
         FlatClassDescription description = new FlatClassDescription(
-                fullType.getSimpleName(),
-                fieldTypeNames,
-                fieldTypeName);
+                layoutDescription.simpleTypeName(),
+                layoutDescription.fields,
+                layoutDescription.fieldType);
         CodeGenerator codeGenerator = new CodeGenerator(description);
+
         String generatedCode = codeGenerator.generateIterator();
 
-        String _fileName = "FlatCursor" + fullType.getSimpleName() + ".java";
+        String _fileName = "FlatCursor" + layoutDescription.simpleTypeName() + ".java";
         writeAllText(pathCombine( outputPath, _fileName), generatedCode);
 
         String arrayCode = codeGenerator.generateArrayList();
 
-        String arrayFileName = "ArrayListOf" + fullType.getSimpleName() + ".java";
+        String arrayFileName = "ArrayListOf" + layoutDescription.simpleTypeName() + ".java";
         writeAllText(pathCombine( outputPath, arrayFileName), arrayCode);
-
-
     }
 }

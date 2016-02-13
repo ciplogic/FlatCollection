@@ -3,6 +3,18 @@
     {
       "typeName": "java.awt.Point",
       "mode": "Fields"
+    },
+    {
+      "typeName": "com.khlud.ciprian.flatcollection.model.Line",
+      "mode": "Fields"
+
+    }
+  ],
+  "Layouts": [
+    {
+      "typeName": "Point3D",
+      "fields": ["X", "Y", "Z"],
+      "fieldType": "float"
     }
   ],
   "outputPath": "BuildPoints/src/FlatCollections"

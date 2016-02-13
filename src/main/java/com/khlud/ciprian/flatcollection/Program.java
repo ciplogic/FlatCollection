@@ -24,6 +24,10 @@ public class Program {
         Arrays.stream(config.Types).forEach(typeDesc -> {
             compiler.buildType(typeDesc.typeName, config.outputPath);
         });
+        Arrays.stream(config.Layouts).forEach(layout->{
+            ClassExtractor.WriteLayoutToPath(config.outputPath, layout );
+        });
+
         System.out.println("Success");
     }
 

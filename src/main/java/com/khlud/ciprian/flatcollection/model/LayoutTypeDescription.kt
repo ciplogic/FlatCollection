@@ -10,12 +10,4 @@ class LayoutTypeDescription(val sizeFields:Int ) {
 
 }
 
-class LayoutFieldDescription {
-    var refType: LayoutTypeDescription? = null
-    var Name: String = ""
-    var Type: String = ""
-    var Size = 0
-    var Offset = 0
-}
-
-
+data class Pair<TKey, TValue>(val key: TKey, val value: TValue);

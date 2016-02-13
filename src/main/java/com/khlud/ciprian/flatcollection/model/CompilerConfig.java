@@ -10,5 +10,6 @@ package com.khlud.ciprian.flatcollection.model;
  */
 public class CompilerConfig {
     public CompilerTypeDescription[] Types = new CompilerTypeDescription[0];
+    public CompilerLayoutDescription[] Layouts = new CompilerLayoutDescription[0];
     public String outputPath;
 }
