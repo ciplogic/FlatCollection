@@ -2,12 +2,15 @@ package com.khlud.ciprian.flatcollection.model;
 
 import com.khlud.ciprian.flatcollection.typedesc.TypeCode;
 import com.khlud.ciprian.flatcollection.utils.ReflectionResolver;
+import com.khlud.ciprian.flatcollection.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.khlud.ciprian.flatcollection.utils.StringUtils.indent;
 
 /**
  * Created by Ciprian on 2/13/2016.
@@ -34,7 +37,7 @@ public class PrimitiveFieldCollector {
 
         List<String> combinedFieldNames =
                 populateFieldsList.stream()
-                        .map(pair -> pair.getValue() + pair.getKey().getName())
+                        .map(pair ->pair.getValue() + indent(pair.getKey().getName()))
                         .collect(Collectors.toList());
         result.fields = toStringArray(combinedFieldNames);
         result.fieldType = populateFieldsList.get(0).getKey().getType().getSimpleName();
@@ -64,7 +67,7 @@ public class PrimitiveFieldCollector {
         }
         List<Field> fieldsOfField = getFieldsAsList(fieldType);
         for (Field fieldOfField : fieldsOfField) {
-            String prefixFieldName = prefix + field.getName();
+            String prefixFieldName = prefix + indent(field.getName());
             populateFields(populateFieldsList, prefixFieldName, fieldOfField);
         }
     }

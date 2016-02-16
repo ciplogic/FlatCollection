@@ -10,4 +10,4 @@ class LayoutTypeDescription(val sizeFields:Int ) {
 
 }
 
-data class Pair<TKey, TValue>(val key: TKey, val value: TValue);
+;

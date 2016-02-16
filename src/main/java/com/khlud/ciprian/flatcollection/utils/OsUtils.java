@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 public class OsUtils {
 
-    public static String[] GetDirectoryFiles(String path, boolean recursive, Predicate<File> isValidFile) {
+    public static String[] getDirectoryFiles(String path, boolean recursive, Predicate<File> isValidFile) {
 
         ArrayList<String> resultList = new ArrayList<>();
 
@@ -51,6 +51,7 @@ public class OsUtils {
         }
         return GetStringsOfArray(resultList);
     }
+
 
     public static String pathCombine(String... args){
         return Joiner.on("/").join(args);

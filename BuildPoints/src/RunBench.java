@@ -95,10 +95,10 @@ public class RunBench {
         FlatCursorLine startIterator = millionPointsArray.getCursor();
         int sum = 0;
         while (startIterator.move()) {
-            sum += startIterator.getbeginx();
-            sum += startIterator.getbeginy();
-            sum += startIterator.getendx();
-            sum += startIterator.getendy();
+            sum += startIterator.getBeginX();
+            sum += startIterator.getBeginY();
+            sum += startIterator.getEndX();
+            sum += startIterator.getEndY();
         }
         return sum;
     }
@@ -118,10 +118,10 @@ public class RunBench {
         FlatCursorLine startIterator = millionPointsArray.getCursor();
         for (int i = 0; i < count; i++) {
             startIterator.add();
-            startIterator.setbeginx(i);
-            startIterator.setbeginy(i + 2);
-            startIterator.setendx(i+6);
-            startIterator.setendy(i + 8);
+            startIterator.setBeginX(i);
+            startIterator.setBeginY(i + 2);
+            startIterator.setEndX(i+6);
+            startIterator.setEndY(i + 8);
 
         }
     }
@@ -193,8 +193,8 @@ public class RunBench {
         FlatCursorPoint startIterator = millionPointsArray.getCursor();
         for (int i = 0; i < count; i++) {
             startIterator.add();
-            startIterator.setx(i);
-            startIterator.sety(i + 2);
+            startIterator.setX(i);
+            startIterator.setY(i + 2);
 
         }
     }
@@ -212,8 +212,8 @@ public class RunBench {
         FlatCursorPoint startIterator = millionPointsArray.getCursor();
         int sum = 0;
         while (startIterator.move()) {
-            sum += startIterator.getx();
-            sum += startIterator.gety();
+            sum += startIterator.getX();
+            sum += startIterator.getY();
         }
         return sum;
     }

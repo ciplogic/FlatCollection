@@ -15,7 +15,13 @@
       "typeName": "Point3D",
       "fields": ["X", "Y", "Z"],
       "fieldType": "float"
+    },
+    {
+      "typeName": "PositionsForToken",
+      "fields": ["tag", "start", "length", "startValue", "lengthValue"],
+      "fieldType": "int"
     }
+
   ],
   "outputPath": "BuildPoints/src/FlatCollections"
 }
