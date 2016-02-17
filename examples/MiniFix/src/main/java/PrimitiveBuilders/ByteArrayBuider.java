@@ -10,14 +10,15 @@ public class ByteArrayBuider {
 
     private byte[] innerArray;
     private int _size;
+    private int _length;
 
     public ByteArrayBuider(int capacity) {
         innerArray = new byte[capacity];
+        _length = innerArray.length;
     }
 
     public void add(byte it) {
-
-        if (innerArray.length == _size) {
+        if (_length == _size) {
             doubleCapacity();
         }
         innerArray[_size] = it;
@@ -26,10 +27,11 @@ public class ByteArrayBuider {
 
     private void doubleCapacity() {
         innerArray = Arrays.copyOf(innerArray, innerArray.length * 2);
+        _length = innerArray.length;
     }
 
     public void addRange(byte[] src, int start, int end) {
-        while (_size+(end-start+1)>= innerArray.length){
+        while (_size+(end-start+1)>= _length){
             doubleCapacity();
         }
         System.arraycopy(src, start, innerArray, _size, end-start);
