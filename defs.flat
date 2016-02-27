@@ -1,0 +1,13 @@
+flat Point3D<int> X, Y, Z end
+
+class FilterX<T>
+    sub filterByX<T>(this list: ListOf<T>, maxX: Func<T, boolean>): ListOf<T>{
+        var result = new ListOf<T>(list.size())
+
+        return result
+    end
+end
+
+specialize FilterX<Point3D>;
+
+

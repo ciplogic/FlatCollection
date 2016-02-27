@@ -1,17 +1,9 @@
 package com.khlud.ciprian.flatcollection;
 
-import com.khlud.ciprian.flatcollection.codegen.CodeGenerator;
-import com.khlud.ciprian.flatcollection.codegen.FlatClassDescription;
+import com.khlud.ciprian.flatcollection.codegen.ListOfCodeGenerator;
+import com.khlud.ciprian.flatcollection.codegen.FlatClazzDiscription;
 import com.khlud.ciprian.flatcollection.model.CompilerLayoutDescription;
 import com.khlud.ciprian.flatcollection.model.PrimitiveFieldCollector;
-import com.khlud.ciprian.flatcollection.typedesc.TypeCode;
-import com.khlud.ciprian.flatcollection.utils.ReflectionResolver;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.khlud.ciprian.flatcollection.utils.OsUtils.pathCombine;
 import static com.khlud.ciprian.flatcollection.utils.OsUtils.writeAllText;
@@ -29,11 +21,11 @@ public class ClassExtractor {
 
 
     public static void WriteLayoutToPath(String outputPath, CompilerLayoutDescription layoutDescription) {
-        FlatClassDescription description = new FlatClassDescription(
+        FlatClazzDiscription description = new FlatClazzDiscription(
                 layoutDescription.simpleTypeName(),
                 layoutDescription.fields,
                 layoutDescription.fieldType);
-        CodeGenerator codeGenerator = new CodeGenerator(description);
+        ListOfCodeGenerator codeGenerator = new ListOfCodeGenerator(description);
 
         String generatedCode = codeGenerator.generateIterator();
 

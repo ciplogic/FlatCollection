@@ -4,7 +4,7 @@ public class FlatCursorPositionsForToken {
     final ArrayListOfPositionsForToken _list;
     int _size;
     int _offset;
-    final static int ItemCount = 5;
+    final static int ItemCount = 4;
 
     FlatCursorPositionsForToken(ArrayListOfPositionsForToken list, int size){
         _list = list;
@@ -40,26 +40,19 @@ public class FlatCursorPositionsForToken {
     public int getstart () {
         return _list.get(_offset+1);
     }
-    public void setlength (int value) {
+    public void setstartValue (int value) {
         _list.set(_offset+2,  value);
     }
 
-    public int getlength () {
+    public int getstartValue () {
         return _list.get(_offset+2);
     }
-    public void setstartValue (int value) {
+    public void setlengthValue (int value) {
         _list.set(_offset+3,  value);
     }
 
-    public int getstartValue () {
-        return _list.get(_offset+3);
-    }
-    public void setlengthValue (int value) {
-        _list.set(_offset+4,  value);
-    }
-
     public int getlengthValue () {
-        return _list.get(_offset+4);
+        return _list.get(_offset+3);
     }
 
 }

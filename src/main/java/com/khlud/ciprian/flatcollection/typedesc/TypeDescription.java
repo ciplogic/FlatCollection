@@ -1,7 +1,5 @@
 package com.khlud.ciprian.flatcollection.typedesc;
 
-import com.sun.org.apache.xpath.internal.operations.String;
-
 /**
  * Created by Ciprian on 1/22/2016.
  */

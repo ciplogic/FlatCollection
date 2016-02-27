@@ -18,7 +18,7 @@
     },
     {
       "typeName": "PositionsForToken",
-      "fields": ["tag", "start", "length", "startValue", "lengthValue"],
+      "fields": ["tag", "start", "startValue", "lengthValue"],
       "fieldType": "int"
     }
 

@@ -26,7 +26,7 @@ public class PrimitiveFieldCollector {
         ReflectionResolver resolver = new ReflectionResolver(new ArrayList<>());
         Class fullType = resolver.getClassByFullName(typeName);
         List<Field> fields = getFieldsAsList(fullType);
-        List<Pair<Field, String>> populateFieldsList = new ArrayList<>();
+        List<PairT<Field, String>> populateFieldsList = new ArrayList<>();
         for (Field field : fields)
             populateFields(populateFieldsList, "", field);
         if(populateFieldsList.size()==0)
@@ -59,10 +59,10 @@ public class PrimitiveFieldCollector {
                 .collect(Collectors.toList());
     }
 
-    private void populateFields(List<Pair<Field, String>> populateFieldsList, String prefix, Field field) {
+    private void populateFields(List<PairT<Field, String>> populateFieldsList, String prefix, Field field) {
         Class fieldType = field.getType();
         if (isNonObjectType(fieldType)) {
-            populateFieldsList.add(new Pair<>(field, prefix));
+            populateFieldsList.add(new PairT<>(field, prefix));
             return;
         }
         List<Field> fieldsOfField = getFieldsAsList(fieldType);

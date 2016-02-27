@@ -10,73 +10,16 @@ import static java.lang.System.out;
  */
 public class Program {
 
-    private static long ITERATION_TIME = 14000;
+    private static long ITERATION_TIME = 14;
     public static void main(String[] args) {
 
         TestBed testBed = new TestBed();
         testBed.scanDirectory("definitions");
         {
-            long start = currentTimeMillis();
-            FileReaderArray readerArray = new FileReaderArray(5000);
-            List<ByteArrayInputStream> fileContents = testBed.fileContents;
-            long end = 0;
-            int count = 0;
-            TagSplitter splitter = new TagSplitter();
-            while (true) {
-                for (int i = 0; i < fileContents.size(); i++) {
-                    //out.println("Reading file: "+testBed.fileList.get(i));
-                    ByteArrayInputStream item = fileContents.get(i);
-
-                    try {
-                        readerArray.readFromByteArray(item, rowByte -> {
-                            //String s = new String(rowByte.ByteData(), "UTF-8");
-                            //out.println("Row: " + s);
-                            splitter.parse(rowByte);
-
-                        });
-                    } catch (Exception e) {
-                        out.println("Error on file: " + testBed.fileList.get(i));
-                        e.printStackTrace();
-                    }
-                }
-
-                end = currentTimeMillis();
-                count++;
-                if (end - start > ITERATION_TIME)
-                    break;
-            }
-            out.println("Iterations: " + (count * 1000 / (end - start)) + " iterations");
+            //TestTokenizingFix(testBed);
         }
         {
-            long start = currentTimeMillis();
-            FileReaderArray readerArray = new FileReaderArray(5000);
-            List<ByteArrayInputStream> fileContents = testBed.fileContents;
-            long end = 0;
-            int count = 0;
-            TagSplitterFlat splitter = new TagSplitterFlat();
-            while (true) {
-                for (int i = 0; i < fileContents.size(); i++) {
-                    ByteArrayInputStream item = fileContents.get(i);
-
-                    try {
-                        readerArray.readFromByteArray(item, rowByte -> {
-                            //String s = new String(rowByte.ByteData(), "UTF-8");
-                            //out.println("Row: " + s);
-                            splitter.parse(rowByte);
-
-                        });
-                    } catch (Exception e) {
-                        out.println("Error on file: " + testBed.fileList.get(i));
-                        e.printStackTrace();
-                    }
-                }
-
-                end = currentTimeMillis();
-                count++;
-                if (end - start > ITERATION_TIME)
-                    break;
-            }
-            out.println("Iterations flat collections: " + (count * 1000 / (end - start)) + " iterations");
+            TokenizeFixFlatCollections(testBed);
         }
         /*
 
@@ -92,5 +35,70 @@ public class Program {
             e.printStackTrace();
         }
         */
+    }
+
+    private static void TokenizeFixFlatCollections(TestBed testBed) {
+        long start = currentTimeMillis();
+        FileReaderArray readerArray = new FileReaderArray(5000);
+        List<ByteArrayInputStream> fileContents = testBed.fileContents;
+        long end = 0;
+        int count = 0;
+        TagSplitterFlat splitter = new TagSplitterFlat();
+        while (true) {
+            for (int i = 0; i < fileContents.size(); i++) {
+                ByteArrayInputStream item = fileContents.get(i);
+
+                try {
+                    readerArray.readFromByteArray(item, rowByte -> {
+                        //String s = new String(rowByte.ByteData(), "UTF-8");
+                        //out.println("Row: " + s);
+                        splitter.parse(rowByte);
+
+                    });
+                } catch (Exception e) {
+                    out.println("Error on file: " + testBed.fileList.get(i));
+                    e.printStackTrace();
+                }
+            }
+
+            end = currentTimeMillis();
+            count++;
+            if (end - start > ITERATION_TIME*1000)
+                break;
+        }
+        out.println("Iterations flat collections: " + (count * 1.0 / ITERATION_TIME) + " iterations");
+    }
+
+    private static void TestTokenizingFix(TestBed testBed) {
+        long start = currentTimeMillis();
+        FileReaderArray readerArray = new FileReaderArray(5000);
+        List<ByteArrayInputStream> fileContents = testBed.fileContents;
+        long end = 0;
+        int count = 0;
+        TagSplitter splitter = new TagSplitter();
+        while (true) {
+            for (int i = 0; i < fileContents.size(); i++) {
+                //out.println("Reading file: "+testBed.fileList.get(i));
+                ByteArrayInputStream item = fileContents.get(i);
+
+                try {
+                    readerArray.readFromByteArray(item, rowByte -> {
+                        //String s = new String(rowByte.ByteData(), "UTF-8");
+                        //out.println("Row: " + s);
+                        splitter.parse(rowByte);
+
+                    });
+                } catch (Exception e) {
+                    out.println("Error on file: " + testBed.fileList.get(i));
+                    e.printStackTrace();
+                }
+            }
+
+            end = currentTimeMillis();
+            count++;
+           if (end - start > ITERATION_TIME*1000)
+                break;
+        }
+        out.println("Iterations: " + (count * 1.0 / ITERATION_TIME) + " iterations");
     }
 }

@@ -17,15 +17,19 @@ import java.util.Arrays;
 public class Program {
 
     public static void main(String[] args) throws Exception {
-        FlatCompiler compiler = new FlatCompiler();
+        runCompiler();
+    }
+
+    private static void runCompiler() throws Exception {
+        FlatTypeCodeGen compiler = new FlatTypeCodeGen();
 
         CompilerConfig config = readConfig();
 
         Arrays.stream(config.Types).forEach(typeDesc -> {
             compiler.buildType(typeDesc.typeName, config.outputPath);
         });
-        Arrays.stream(config.Layouts).forEach(layout->{
-            ClassExtractor.WriteLayoutToPath(config.outputPath, layout );
+        Arrays.stream(config.Layouts).forEach(layout -> {
+            ClassExtractor.WriteLayoutToPath(config.outputPath, layout);
         });
 
         System.out.println("Success");

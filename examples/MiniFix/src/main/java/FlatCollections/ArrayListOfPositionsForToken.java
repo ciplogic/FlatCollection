@@ -7,7 +7,7 @@ public class ArrayListOfPositionsForToken {
     int _size;
     int _capacity;
 
-    final static int ItemCount = 5;
+    final static int ItemCount = 4;
 
     public ArrayListOfPositionsForToken() {
         setCapacity(10);

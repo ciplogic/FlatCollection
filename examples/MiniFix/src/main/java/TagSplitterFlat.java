@@ -40,7 +40,6 @@ public class TagSplitterFlat {
         FlatCursorPositionsForToken token = _tokens.getCursor();
         token.add();
         token.setstart(pos);
-        token.setlength(endTag-pos+1);
         token.settag(FileReaderArray.parseInt(innerArray, pos, pos+length));
         token.setstartValue(newPos+1);
         token.setlengthValue(endTag-newPos-1);
