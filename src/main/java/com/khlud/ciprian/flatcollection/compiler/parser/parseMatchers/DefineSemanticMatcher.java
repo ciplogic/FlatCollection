@@ -29,11 +29,11 @@ public class DefineSemanticMatcher extends FoldParseHandler {
     private void parseRows(List<List<TokenDefinition>> rowDefinitions) {
         rowDefinitions.stream().forEach(
             row -> {
-                String definitionName = row.get(0).Content;
-                List<String> definition = row.stream()
-                        .skip(2)
-                        .map(token->token.Content)
-                        .collect(Collectors.toList());
+                List<String> tokenContent = tokensToContentList(row, true);
+                String definitionName = tokenContent.get(0);
+                tokenContent.remove(1);
+                tokenContent.remove(0);
+                List<String> definition = tokenContent;
                 definitions.add(new PairT<>(definitionName, definition));
             }
         );

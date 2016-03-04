@@ -8,6 +8,7 @@ import com.khlud.ciprian.flatcollection.compiler.preParser.FoldedMacro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ciprian on 3/2/2016.
@@ -19,6 +20,14 @@ public abstract class FoldParseHandler implements IFoldParseHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected List<String> tokensToContentList(List<TokenDefinition> tokensList, boolean skipSpaces){
+        List<String> definition = tokensList.stream()
+                .filter(tok -> skipSpaces? tok.Kind!=FlatTokenKind.Space :true)
+                .map(token->token.Content)
+                .collect(Collectors.toList());
+        return definition;
     }
 
     List<List<TokenDefinition>> splitTokensInRows(List<TokenDefinition> tokens) {

@@ -1,6 +1,7 @@
 package com.khlud.ciprian.flatcollection.compiler.codeModel;
 
 import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
+import com.khlud.ciprian.flatcollection.compiler.parser.parseMatchers.MethodSignature;
 import com.khlud.ciprian.flatcollection.model.PairT;
 
 import java.util.ArrayList;
@@ -20,11 +21,11 @@ public class ClassModel extends NodeModel{
         name = className;
     }
 
-    public MethodModel addMethod(String methodName, List<PairT<String, String>> arguments, String returnType){
+    public MethodModel addMethod(MethodSignature signature) {
         MethodModel methodModel = new MethodModel(this);
         Methods.add(methodModel);
+        methodModel.setSignature(signature);
         return methodModel;
-
     }
 }
 
