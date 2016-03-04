@@ -8,11 +8,19 @@ public enum FlatTokenKind {
     Eoln,
     Eof,
     Identifier,
-    
-    EndOp,
-    SubOp,
     ClassOp,
-    WhileOp,
-    IfOp,
+    WhileOp, ForOp,
+    IfOp, 
+    FlatOp, 
+    CurlyOpen, CurlyClose, 
+    ShiftLeft, ShiftRight, 
+    LessThan, GreaterThan,
+    Comma, 
+    ParenOpen, ParenClose, 
+    Colon, SemiColon, 
+    
+    AreEqualOp, AssingOp, 
+    DotOp, Number, SquareOpen, SquareClose, Mul, Plus, Sub, Div, PlusEqualOp, AtOp,
+    
 
 }

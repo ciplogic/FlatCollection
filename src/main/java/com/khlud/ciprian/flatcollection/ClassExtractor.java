@@ -1,7 +1,7 @@
 package com.khlud.ciprian.flatcollection;
 
 import com.khlud.ciprian.flatcollection.codegen.ListOfCodeGenerator;
-import com.khlud.ciprian.flatcollection.codegen.FlatClazzDiscription;
+import com.khlud.ciprian.flatcollection.compiler.codeModel.FlatClazzDiscription;
 import com.khlud.ciprian.flatcollection.model.CompilerLayoutDescription;
 import com.khlud.ciprian.flatcollection.model.PrimitiveFieldCollector;
 

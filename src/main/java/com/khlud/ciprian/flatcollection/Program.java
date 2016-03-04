@@ -6,10 +6,18 @@
 package com.khlud.ciprian.flatcollection;
 
 import com.google.gson.Gson;
+import com.khlud.ciprian.flatcollection.compiler.ReifiedCompiler;
+import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
+import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
+import com.khlud.ciprian.flatcollection.compiler.preParser.FlatPreParser;
+import com.khlud.ciprian.flatcollection.compiler.preParser.FoldedMacro;
 import com.khlud.ciprian.flatcollection.model.CompilerConfig;
 import com.khlud.ciprian.flatcollection.utils.OsUtils;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Ciprian
@@ -17,7 +25,28 @@ import java.util.Arrays;
 public class Program {
 
     public static void main(String[] args) throws Exception {
+        Program p = new Program();
+        p.parseFlatFile();
+
         runCompiler();
+    }
+
+    void parseFlatFile() throws Exception {
+        ReifiedCompiler compiler = new ReifiedCompiler();
+        compiler.initialize();
+        String[] directoryFiles = OsUtils.getDirectoryFiles("./", true,
+                file -> file.getName().endsWith(".flat"));
+        Arrays.stream(directoryFiles).forEach(flatFile -> {
+            try {
+                compiler.parseFull(flatFile);
+            } catch (Exception ex) {
+                Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        );
+        ProgramModel programModel = compiler.programModel();
+        compiler.generateCode("FlatCollections", programModel);
+
     }
 
     private static void runCompiler() throws Exception {

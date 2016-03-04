@@ -5,6 +5,7 @@
  */
 package com.khlud.ciprian.flatcollection.codegen;
 
+import com.khlud.ciprian.flatcollection.compiler.codeModel.FlatClazzDiscription;
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
 

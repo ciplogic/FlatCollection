@@ -144,4 +144,8 @@ public class OsUtils {
             return "";
         }
     }
+
+    public static void createPath(String path) {
+        new File(path).mkdirs();
+    }
 }
