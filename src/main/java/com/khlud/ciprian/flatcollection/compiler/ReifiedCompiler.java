@@ -36,7 +36,7 @@ public class ReifiedCompiler {
     }
 
     public void parseFull(String flatFile) throws Exception {
-        List<TokenDefinition> tokenFlat = lexer.getTokens(flatFile, true);
+        List<TokenDefinition> tokenFlat = lexer.getTokens(flatFile, false);
         List<FoldedMacro> foldedMacros = preParser.preParse(tokenFlat);
         semanticParser.parseMacros(foldedMacros);
 

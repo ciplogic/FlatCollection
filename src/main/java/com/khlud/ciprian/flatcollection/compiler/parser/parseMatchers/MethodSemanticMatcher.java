@@ -1,6 +1,7 @@
 package com.khlud.ciprian.flatcollection.compiler.parser.parseMatchers;
 
 import com.khlud.ciprian.flatcollection.compiler.codeModel.ClassModel;
+import com.khlud.ciprian.flatcollection.compiler.codeModel.MethodModel;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.NodeModel;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.TypeDescription;
 import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
@@ -20,7 +21,8 @@ public class MethodSemanticMatcher extends FoldParseHandler {
         List<String> arguments = tokensToContentList(macro._attributeTokens, true);
 
         MethodSignature signature = buildSignature(arguments);
-        classModel.addMethod(signature);
+        MethodModel method = classModel.addMethod(signature);
+        method.body =  macro._childrenTokens;
     }
 
     private MethodSignature buildSignature(List<String> arguments) {

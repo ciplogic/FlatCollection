@@ -35,7 +35,12 @@ public class TypeDescription {
         TypeElements.clear();
         IntStream.rangeClosed(start, end).forEach(
                 i -> {
-                    TypeElements.add(arguments.get(i));
+                    String argContent = arguments.get(i);
+                    if(argContent.equals(":")) {
+                        return;
+                    }
+
+                    TypeElements.add(argContent);
                 }
         );
 

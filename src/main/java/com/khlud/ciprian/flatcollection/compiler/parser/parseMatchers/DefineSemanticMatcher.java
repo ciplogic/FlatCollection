@@ -29,6 +29,8 @@ public class DefineSemanticMatcher extends FoldParseHandler {
         rowDefinitions.stream().forEach(
             row -> {
                 List<String> tokenContent = tokensToContentList(row, true);
+                if(tokenContent.size()==0)
+                    return;
                 String definitionName = tokenContent.get(0);
                 tokenContent.remove(1);
                 tokenContent.remove(0);

@@ -32,4 +32,9 @@ import java.util.List;
         PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos-1), typeDescription);
         this.arguments.add(argument);
     }
+
+    @Override
+    public String toString() {
+        return name + "("+ arguments.size()+")";
+    }
 }
