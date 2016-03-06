@@ -33,6 +33,10 @@ public class MethodSemanticMatcher extends FoldParseHandler {
         int openParenIndex = arguments.indexOf("(");
 
         int closeParenIndex = arguments.indexOf(")");
+        if(openParenIndex > 0) {
+            List<String> tokensArguments = arguments.subList(openParenIndex+1, closeParenIndex-openParenIndex+1);
+            signature.buildArguments(tokensArguments);
+        }
         if(arguments.size()>2 && (closeParenIndex >0)){
             signature.returnType.fillType(arguments, closeParenIndex+1, arguments.size()-1);
             return signature;

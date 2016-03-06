@@ -14,5 +14,9 @@ public abstract class NodeModel {
     public String toString() {
         return  name;
     }
+
+    public String resolveExpression(String itemExpression) throws Exception {
+        throw new Exception("Invalid expression");
+    }
 }
 

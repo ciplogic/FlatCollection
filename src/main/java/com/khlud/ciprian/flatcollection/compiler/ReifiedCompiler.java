@@ -23,8 +23,7 @@ public class ReifiedCompiler {
 
     public void initialize(){
         lexer.initialize();
-        preParser.initialize();
-        semanticParser.initialize();
+        semanticParser.initialize(preParser);
     }
 
     public List<List<TokenDefinition>> tokenize(List<String> lines) throws Exception {

@@ -29,13 +29,12 @@ public abstract class FoldParseHandler implements IFoldParseHandler {
                 .collect(Collectors.toList());
         return definition;
     }
-
-    List<List<TokenDefinition>> splitTokensInRows(List<TokenDefinition> tokens) {
+    List<List<TokenDefinition>> splitTokensInParts(List<TokenDefinition> tokens, FlatTokenKind tokenKind) {
         List<List<TokenDefinition>> rowsResult = new ArrayList<>();
 
         List<TokenDefinition> rowData = new ArrayList<>();
         for (TokenDefinition token : tokens) {
-            if (token.Kind != FlatTokenKind.Eoln) {
+            if (token.Kind != tokenKind) {
                 rowData.add(token);
                 continue;
             }
@@ -49,5 +48,9 @@ public abstract class FoldParseHandler implements IFoldParseHandler {
             rowsResult.add(rowData);
         }
         return rowsResult;
+    }
+
+    List<List<TokenDefinition>> splitTokensInRows(List<TokenDefinition> tokens) {
+        return splitTokensInParts(tokens, FlatTokenKind.Eoln);
     }
 }

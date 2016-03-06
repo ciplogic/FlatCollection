@@ -1,9 +1,6 @@
 package com.khlud.ciprian.flatcollection.compiler.parser.parseMatchers;
 
-import com.khlud.ciprian.flatcollection.compiler.codeModel.FlatModel;
-import com.khlud.ciprian.flatcollection.compiler.codeModel.NodeModel;
-import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
-import com.khlud.ciprian.flatcollection.compiler.codeModel.SpecializeModel;
+import com.khlud.ciprian.flatcollection.compiler.codeModel.*;
 import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
 import com.khlud.ciprian.flatcollection.compiler.preParser.FoldedMacro;
 
@@ -23,7 +20,7 @@ public class SpecializeSemanticMatcher extends FoldParseHandler {
 
         List<String> children =  getIdentifiers( macro._childrenTokens);
 
-        SpecializeModel specializeModel = new SpecializeModel(attributes.get(0), children);
+        SpecializeModel specializeModel = new SpecializeModel(attributes.get(0), children.get(0));
         programModel.addSpecializeModel(specializeModel);
         specializeModel.processDefinitions();
 

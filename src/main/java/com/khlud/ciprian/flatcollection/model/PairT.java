@@ -19,4 +19,9 @@ public class PairT<K, V> {
         this._key = key;
         this._value = value;
     }
+
+    @Override
+    public String toString() {
+        return _key.toString() + "->" + _value.toString();
+    }
 }

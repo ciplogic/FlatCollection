@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassModel extends NodeModel{
+    public final List<String> genericArguments;
     public List<List<TokenDefinition>> Constants;
     public List<PairT<String, List<String>>> Definitions;
     public List<List<TokenDefinition>> Variables;
@@ -18,6 +19,7 @@ public class ClassModel extends NodeModel{
     public List<String> GenericArguments = new ArrayList<>();
 
     public ClassModel(String className, List<String> genericArguments){
+        this.genericArguments = genericArguments;
         name = className;
     }
 

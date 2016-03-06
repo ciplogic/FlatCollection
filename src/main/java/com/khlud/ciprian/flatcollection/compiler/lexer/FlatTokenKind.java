@@ -20,7 +20,7 @@ public enum FlatTokenKind {
     Colon, SemiColon, 
     
     AreEqualOp, AssingOp, 
-    DotOp, Number, SquareOpen, SquareClose, Mul, Plus, Sub, Div, PlusEqualOp, AtOp,
+    DotOp, Number, SquareOpen, SquareClose, Mul, Plus, Sub, Div, PlusEqualOp, AtOp, Definition,
     
 
 }

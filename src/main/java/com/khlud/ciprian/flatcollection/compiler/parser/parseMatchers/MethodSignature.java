@@ -10,6 +10,26 @@ import java.util.List;
  * Created by Ciprian on 3/2/2016.
  */ public class MethodSignature {
     public String name;
-    public List<PairT<String, String>> arguments = new ArrayList<>();
+    public List<PairT<String, TypeDescription>> arguments = new ArrayList<>();
     public TypeDescription returnType = new TypeDescription();
+
+    public void buildArguments(List<String> arguments){
+        if(arguments.size()==0)
+            return;
+        int startPos = 0;
+        int pos = 0;
+        for(String arg: arguments){
+            if(",".equals(arg)){
+                TypeDescription typeDescription = new TypeDescription(arguments, startPos, pos-2);
+                PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos-1), typeDescription);
+                this.arguments.add(argument);
+                startPos = pos+1;
+
+            }
+            pos++;
+        }
+        TypeDescription typeDescription = new TypeDescription(arguments, startPos, pos-2);
+        PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos-1), typeDescription);
+        this.arguments.add(argument);
+    }
 }

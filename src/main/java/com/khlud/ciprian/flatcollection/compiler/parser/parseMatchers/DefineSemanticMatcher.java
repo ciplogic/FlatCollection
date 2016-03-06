@@ -16,17 +16,16 @@ import java.util.stream.Collectors;
  * Created by Ciprian on 3/2/2016.
  */
 public class DefineSemanticMatcher extends FoldParseHandler {
-    public List<PairT<String, List<String>>> definitions = new ArrayList<>();
 
     @Override
     public void parseMacro(NodeModel nodeModel, FoldedMacro macro) {
         List<List<TokenDefinition>> rowDefinitions = splitTokensInRows(macro._childrenTokens);
-        parseRows(rowDefinitions);
         ClassModel classModel = (ClassModel) nodeModel;
-        classModel.Definitions = definitions;
+        parseRows(classModel, rowDefinitions);
     }
 
-    private void parseRows(List<List<TokenDefinition>> rowDefinitions) {
+    private void parseRows(ClassModel classModel, List<List<TokenDefinition>> rowDefinitions) {
+        List<PairT<String, List<String>>> definitions = new ArrayList<>();
         rowDefinitions.stream().forEach(
             row -> {
                 List<String> tokenContent = tokensToContentList(row, true);
@@ -37,5 +36,7 @@ public class DefineSemanticMatcher extends FoldParseHandler {
                 definitions.add(new PairT<>(definitionName, definition));
             }
         );
+
+        classModel.Definitions = definitions;
     }
 }

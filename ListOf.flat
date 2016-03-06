@@ -6,11 +6,6 @@ class ListOf<T> {
     define {
         TValue = T.valueType
         countFields=T.countFields
-
-    }
-
-    validate {
-        countFields > 0
     }
 
     var {
@@ -19,7 +14,7 @@ class ListOf<T> {
         int _capacity
     }
     const {
-        ItemCount = countFields
+        int ItemCount = countFields
     }
     sub initialize {
         setCapacity(10);
@@ -29,9 +24,9 @@ class ListOf<T> {
     }
 
     sub setCapacity(int newSize){
-            int capacity = newSize*ItemCount
+            int capacity = newSize*ItemCount;
             if capacity <= 0 {
-                capacity = 10*ItemCount
+                capacity = 10*ItemCount;
             }
             if _data == null {
                 _data = new T[capacity];
@@ -41,8 +36,8 @@ class ListOf<T> {
             _capacity = newSize;
         }
 
-    sub getCursor(): FlatCursor<T> {
-        return new FlatCursor<T>(this, _size)
+    sub getCursor(): FlatCursor@T {
+        return new FlatCursor@T(this, _size)
     }
 
     sub clear() {
@@ -91,7 +86,7 @@ const {
         _size = size*ItemCount;
     }
 
-    sub add(){
+    sub add {
         _list.add();
         move();
     }
@@ -109,10 +104,7 @@ const {
 
     }
 
-    each (fieldName : fieldNames) {
-        step {
-            index  = index + 1
-        }
+    each fieldNames -> fieldName, index {
 
             sub set@fieldName (TValue value) {
                 _list.set(_offset+ index,  value);

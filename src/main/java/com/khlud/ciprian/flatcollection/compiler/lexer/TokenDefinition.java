@@ -24,4 +24,11 @@ public class TokenDefinition {
                 .map(it->it.Content)
                 .collect(Collectors.toList());
     }
+
+    public TokenDefinition clone(){
+        TokenDefinition tokenDefinition = new TokenDefinition();
+        tokenDefinition.Kind = Kind;
+        tokenDefinition.Content = Content;
+        return tokenDefinition;
+    }
 }

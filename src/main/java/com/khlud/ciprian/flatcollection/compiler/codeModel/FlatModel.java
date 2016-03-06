@@ -16,4 +16,16 @@ public class FlatModel extends NodeModel {
         this.fieldNames = fieldNames;
         this.fieldTypeName = fieldTypeName;
     }
+
+    @Override
+    public String resolveExpression(String itemExpression) throws Exception {
+        switch (itemExpression){
+            case "valueType":
+                return fieldTypeName;
+
+            case "countFields":
+                return new Integer(fieldNames.size()).toString();
+        }
+        return super.resolveExpression(itemExpression);
+    }
 }

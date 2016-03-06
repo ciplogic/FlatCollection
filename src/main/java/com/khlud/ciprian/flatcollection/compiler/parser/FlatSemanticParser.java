@@ -5,6 +5,7 @@ import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
 import com.khlud.ciprian.flatcollection.compiler.lexer.FlatTokenKind;
 import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
 import com.khlud.ciprian.flatcollection.compiler.parser.parseMatchers.*;
+import com.khlud.ciprian.flatcollection.compiler.preParser.FlatPreParser;
 import com.khlud.ciprian.flatcollection.compiler.preParser.FoldedMacro;
 
 import java.util.HashMap;
@@ -25,20 +26,25 @@ public class FlatSemanticParser {
 
     static Map<String, IFoldParseHandler> _handlers = new HashMap<>();
 
-    static {
-        initialize();
+
+    public static void initialize(FlatPreParser preParser){
+
+        addHandler("flat", new FlatSemanticMatcher());
+        addHandler("class", new ClassSemanticMatcher());
+        addHandler("define", new DefineSemanticMatcher());
+        addHandler("sub", new MethodSemanticMatcher());
+        addHandler("const", new ConstSemanticMatcher());
+        addHandler("each", new EachSemanticMatcher());
+
+        addHandler("var", new VarSemanticMatcher());
+        addHandler("validate", new ValidateSemanticMatcher());
+        addHandler("specialize", new SpecializeSemanticMatcher());
+
+        preParser.initialize(_handlers.keySet().stream());
     }
-    public static void initialize(){
 
-        _handlers.put("flat", new FlatSemanticMatcher());
-        _handlers.put("class", new ClassSemanticMatcher());
-        _handlers.put("define", new DefineSemanticMatcher());
-        _handlers.put("sub", new MethodSemanticMatcher());
-        _handlers.put("const", new ConstSemanticMatcher());
-
-        _handlers.put("var", new VarSemanticMatcher());
-        _handlers.put("validate", new ValidateSemanticMatcher());
-        _handlers.put("specialize", new SpecializeSemanticMatcher());
+    private static void addHandler(String tokenName, FoldParseHandler handler) {
+        _handlers.put(tokenName, handler);
     }
 
     public static List<String> getIdentifiers(List<TokenDefinition> tokens){

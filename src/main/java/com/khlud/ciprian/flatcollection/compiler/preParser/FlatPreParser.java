@@ -6,6 +6,7 @@ import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Ciprian on 2/28/2016.
@@ -13,20 +14,8 @@ import java.util.stream.Collectors;
 public class FlatPreParser {
 
     Set<String> _reserved = new HashSet<>();
-    public void initialize(){
-
-        Arrays.stream(new String[]{
-            "flat", "class", "specialize",
-                "sub", "define", "var", "interface",
-                "const", "validate"
-
-        }).forEach(this::addReserved);
-
-        addReserved("flat");
-        addReserved("class");
-
-        addReserved("specialize");
-        addReserved("sub");
+    public void initialize(Stream<String> tokens){
+        tokens.forEach(this::addReserved);
     }
 
     private void addReserved(String flatStr) {
