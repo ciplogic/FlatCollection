@@ -1,7 +1,5 @@
 package com.khlud.ciprian.flatcollection.compiler.codeModel;
 
-import com.google.common.base.Joiner;
-
 import java.util.List;
 
 /**
@@ -20,15 +18,14 @@ public class FlatModel extends NodeModel {
     }
 
     @Override
-    public String resolveExpression(String itemExpression) throws Exception {
+    public Object resolveExpression(String itemExpression) throws Exception {
         switch (itemExpression) {
             case "valueType":
                 return fieldTypeName;
-
             case "countFields":
                 return new Integer(fieldNames.size()).toString();
             case "fieldNames":
-                return Joiner.on(",").join(fieldNames);
+                return fieldNames;
         }
         return super.resolveExpression(itemExpression);
     }

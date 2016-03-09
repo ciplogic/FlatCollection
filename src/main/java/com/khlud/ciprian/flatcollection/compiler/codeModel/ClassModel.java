@@ -14,11 +14,9 @@ public class ClassModel extends NodeModel {
     public List<PairT<String, List<String>>> Definitions;
     public List<List<String>> Variables;
     public List<List<TokenDefinition>> Validations;
-    public List<TypeDescription> Imports;
+    public List<TypeDescription> Imports = new ArrayList<>();
 
     public List<MethodModel> Methods = new ArrayList<>();
-
-    public List<String> GenericArguments = new ArrayList<>();
 
     public ClassModel(String className, List<String> genericArguments) {
         this.genericArguments = genericArguments;

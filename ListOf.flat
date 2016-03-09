@@ -1,13 +1,17 @@
 flat Point3D {
-  X, Y, Z: int
+  X, Y, Z: double
 }
 
 class ListOf<T> {
-    define {
+
+    where {
         TValue = T.valueType
         countFields=T.countFields
     }
 
+    imports {
+        java.util.Arrays
+    }
     var {
         TValue[] _data
         int _size
@@ -25,10 +29,10 @@ class ListOf<T> {
 
     sub setCapacity(int newSize){
             int capacity = newSize*ItemCount;
-            if capacity <= 0 {
+            if (capacity <= 0) {
                 capacity = 10*ItemCount;
             }
-            if _data == null {
+            if (_data == null) {
                 _data = new TValue[capacity];
             } else {
                 _data = Arrays.copyOf(_data, capacity);
@@ -40,11 +44,11 @@ class ListOf<T> {
         return new FlatCursor@T(this, _size);
     }
 
-    sub clear() {
+    sub clear {
         _size = 0;
     }
 
-    sub add(){
+    sub add {
         _size ++;
         if(_capacity < _size){
             setCapacity(2*_capacity);
@@ -60,27 +64,21 @@ class ListOf<T> {
 }
 
 class FlatCursor<T> {
-  define {
+    where {
         TValue = T.valueType
         countFields=T.countFields
         fieldNames = T.fieldNames
-        index = 0
     }
 
-    validate {
-        countFields > 0
+    var {
+        ListOf@T _list
+        int _size
+        int _offset
     }
-
-var {
-    final ArrayListOf<T> _list;
-    int _size;
-    int _offset;
-}
-const {
-    int ItemCount = countFields;
-}
-
-    sub initialize(ArrayListOf<T> list, int size){
+    const {
+        int ItemCount = countFields
+    }
+    sub initialize(ListOf@T list, int size){
         _list = list;
         _offset = -ItemCount;
         _size = size*ItemCount;
@@ -95,27 +93,24 @@ const {
         _offset = ItemCount*pos;
     }
 
-    sub move(){
+    sub move():boolean{
         _offset = _offset + ItemCount;
         return _offset < _size;
     }
 
 
+    each fieldNames : fieldName, index {
+        sub set@fieldName (TValue value) {
+            _list.set(_offset+ index,  value);
+        }
 
-    }
-
-    each fieldNames -> fieldName, index {
-
-            sub set@fieldName (TValue value) {
-                _list.set(_offset+ index,  value);
-            }
-
-            sub TValue get@fieldName () {
-                return _list.get(_offset+index)
-            }
+        sub TValue get@fieldName () {
+            return _list.get(_offset+index)
+        }
     }
 
 }
 
 
 specialize ListOf { Point3D }
+specialize FlatCursor { Point3D }

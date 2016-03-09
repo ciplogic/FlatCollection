@@ -13,7 +13,7 @@ public abstract class NodeModel {
         return name;
     }
 
-    public String resolveExpression(String itemExpression) throws Exception {
+    public Object resolveExpression(String itemExpression) throws Exception {
         throw new Exception("Invalid expression");
     }
 }

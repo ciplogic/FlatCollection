@@ -13,58 +13,57 @@ import java.util.stream.Stream;
  */
 public class ReifiedUtils {
 
-    public static List<TokenDefinition> specializeGenerics(List<TokenDefinition> tokens, Map<String, String> generics) {
+    public static List<TokenDefinition> specializeGenerics(List<TokenDefinition> tokens, Map<String, Object> generics) {
         List<TokenDefinition> result = tokens.stream()
                 .map(token -> {
-                    String newName = generics.getOrDefault(token.Content, token.Content);
-                    TokenDefinition cloneToken = token.clone();
-                    if ("@".equals(newName)) {
-                        newName = "";
-                    }
-                    cloneToken.Content = newName;
-                    return cloneToken;
-                }
+                            TokenDefinition cloneToken = token.clone();
+                            cloneToken.Content = getSpecializedString(generics, token.Content);
+                            return cloneToken;
+                        }
                 ).collect(Collectors.toList());
         return result;
     }
 
-    public static List<String> specializeGenericTexts(List<String> tokens, Map<String, String> generics) {
+    public static List<String> specializeGenericTexts(List<String> tokens, Map<String, Object> generics) {
         List<String> result = specializeGenericTexts(tokens.stream(), generics)
                 .collect(Collectors.toList());
         return result;
     }
 
-    public static Stream<String> specializeGenericTexts(Stream<String> tokens, Map<String, String> generics) {
+    public static Stream<String> specializeGenericTexts(Stream<String> tokens, Map<String, Object> generics) {
         Stream<String> result = tokens
-                .map(content -> {
-                    String newName = generics.getOrDefault(content, content);
-
-                    if ("@".equals(newName)) {
-                        newName = "";
-                    }
-                    return newName;
-                }
+                .map(content -> getSpecializedString(generics, content)
                 );
         return result;
     }
 
-    public static void writeVariables(List<List<String>> variables, Map<String, String> generics, StringBuilder stringBuilder) {
+    private static String getSpecializedString(Map<String, Object> generics, String content) {
+        if ("@".equals(content)) {
+            return "";
+        }
+        Object mappedName = generics.getOrDefault(content, content);
+        String newName = mappedName.toString();
+
+        return newName;
+    }
+
+    public static void writeVariables(List<List<String>> variables, Map<String, Object> generics, StringBuilder stringBuilder) {
         variables.stream()
                 .forEach(
                         rowVariables -> {
                             List<String> tokensGenerics = specializeGenericTexts(rowVariables, generics);
 
                             tokensGenerics.stream()
-                            .forEach(
-                                    it -> stringBuilder.append(it)
-                            );
+                                    .forEach(
+                                            it -> stringBuilder.append(it)
+                                    );
                             stringBuilder.append(";\n");
                         }
                 );
 
     }
 
-    public static void writeConstants(List<List<String>> variables, Map<String, String> generics, StringBuilder stringBuilder) {
+    public static void writeConstants(List<List<String>> variables, Map<String, Object> generics, StringBuilder stringBuilder) {
         variables.stream()
                 .forEach(
                         rowVariables -> {
@@ -72,25 +71,17 @@ public class ReifiedUtils {
 
                             stringBuilder.append("static final ");
                             tokensGenerics.stream()
-                            .forEach(
-                                    it -> stringBuilder.append(it)
-                            );
+                                    .forEach(
+                                            it -> stringBuilder.append(it)
+                                    );
                             stringBuilder.append(";\n");
                         }
                 );
     }
 
-    public static List<String> specializeGenericWords(TypeDescription tokens, Map<String, String> generics) {
-        List<String> result = tokens.TypeElements.stream()
-                .map(content -> {
-                    if ("@".equals(content)) {
-                        return "";
-                    }
-                    String newName = generics.getOrDefault(content, content);
-
-                    return newName;
-                }
-                ).collect(Collectors.toList());
+    public static List<String> specializeGenericWords(TypeDescription tokens, Map<String, Object> generics) {
+        List<String> result = specializeGenericTexts(tokens.TypeElements.stream(), generics)
+                .collect(Collectors.toList());
         return result;
     }
 

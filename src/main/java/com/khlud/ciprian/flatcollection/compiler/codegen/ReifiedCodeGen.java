@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.khlud.ciprian.flatcollection.compiler.codegen.ReifiedUtils.specializeGenericTexts;
 import static com.khlud.ciprian.flatcollection.compiler.codegen.ReifiedUtils.specializeGenerics;
@@ -46,11 +47,12 @@ public class ReifiedCodeGen {
     private void specializeType(ClassModel classModel, List<String> specialization) throws Exception {
         String className = classModel.name;
         StringBuilder stringBuilder = new StringBuilder();
-        Map<String, String> generics = buildArguments(classModel, specialization);
+        Map<String, Object> generics = buildArguments(classModel, specialization);
         generateDefinitions(classModel, generics);
+        writeImports(classModel, stringBuilder);
         String combinedClassName = className + translateGenericList(classModel.genericArguments, generics, "");
         stringBuilder
-                .append("class ")
+                .append("public class ")
                 .append(combinedClassName);
 
         stringBuilder.append("{ \n");
@@ -65,26 +67,39 @@ public class ReifiedCodeGen {
         OsUtils.writeAllText(combinedClassName + ".java", stringBuilder.toString());
     }
 
-    private void generateDefinitions(ClassModel classModel, Map<String, String> generics) throws Exception {
+    private void writeImports(ClassModel classModel, StringBuilder stringBuilder) {
+        classModel.Imports.stream()
+                .forEach(
+                        typeDescription -> {
+                            stringBuilder.append(
+                                    "import ")
+                                    .append(Joiner.on("").join(typeDescription.TypeElements))
+                                    .append(";\n\n");
+                        }
+                );
+    }
+
+    private void generateDefinitions(ClassModel classModel, Map<String, Object> generics) throws Exception {
         ProgramModel programModel = (ProgramModel) classModel._parent;
         for (PairT<String, List<String>> definition : classModel.Definitions) {
             List<String> expressionValue = definition.getValue();
 
-            String resolvedValue = resolveExpression(programModel, expressionValue, generics);
+            Object resolvedValue = resolveExpression(programModel, expressionValue, generics);
             generics.put(definition.getKey(), resolvedValue);
         }
     }
 
-    private String resolveExpression(ProgramModel programModel, List<String> expressionValue, Map<String, String> generics) throws Exception {
+    private Object resolveExpression(ProgramModel programModel, List<String> expressionValue, Map<String, Object> generics) throws Exception {
         String typeToResolve = expressionValue.get(0);
-        String typeDefinition = generics.get(typeToResolve);
-        NodeModel typeModel = programModel.locate(typeDefinition);
+        Object typeDefinition = generics.get(typeToResolve);
+        String typeDefinitionName = typeDefinition.toString();
+        NodeModel typeModel = programModel.locate(typeDefinitionName);
         String verbToResolve = expressionValue.get(2);
-        String result = typeModel.resolveExpression(verbToResolve);
+        Object result = typeModel.resolveExpression(verbToResolve);
         return result;
     }
 
-    private String translateGenericList(List<String> genericArguments, Map<String, String> generics, String joinText) {
+    private String translateGenericList(List<String> genericArguments, Map<String, Object> generics, String joinText) {
         List<String> translatedGenerics = genericArguments.stream()
                 .map(generic -> translateGeneric(generic, generics))
                 .collect(Collectors.toList());
@@ -92,14 +107,14 @@ public class ReifiedCodeGen {
         return Joiner.on(joinText).join(translatedGenerics);
     }
 
-    private String translateGeneric(String genericArgument, Map<String, String> generics) {
-        String description = generics.get(genericArgument);
+    private String translateGeneric(String genericArgument, Map<String, Object> generics) {
+        Object description = generics.get(genericArgument);
 
-        return description;
+        return description.toString();
     }
 
-    private Map<String, String> buildArguments(ClassModel classModel, List<String> specialization) {
-        Map<String, String> result = new HashMap<>();
+    private Map<String, Object> buildArguments(ClassModel classModel, List<String> specialization) {
+        Map<String, Object> result = new HashMap<>();
         int pos = 0;
         for (String genericName : classModel.genericArguments) {
             result.put(genericName, specialization.get(pos));
@@ -108,7 +123,7 @@ public class ReifiedCodeGen {
         return result;
     }
 
-    private void writeMethods(List<MethodModel> Methods, Map<String, String> generics, String className, StringBuilder stringBuilder) {
+    private void writeMethods(List<MethodModel> Methods, Map<String, Object> generics, String className, StringBuilder stringBuilder) {
         Methods.stream()
                 .forEach(
                         methodModel -> {
@@ -120,7 +135,7 @@ public class ReifiedCodeGen {
 
     }
 
-    private void writeMethodBody(MethodModel methodModel, Map<String, String> generics, StringBuilder stringBuilder) {
+    private void writeMethodBody(MethodModel methodModel, Map<String, Object> generics, StringBuilder stringBuilder) {
         List<TokenDefinition> bodyTokens = methodModel.body;
         List<TokenDefinition> specializedBody = specializeGenerics(bodyTokens, generics);
         specializedBody.stream()
@@ -137,7 +152,7 @@ public class ReifiedCodeGen {
 
     }
 
-    private void writeMethodSignature(MethodModel methodModel, Map<String, String> generics, String className, StringBuilder stringBuilder) {
+    private void writeMethodSignature(MethodModel methodModel, Map<String, Object> generics, String className, StringBuilder stringBuilder) {
         stringBuilder.append(" public ");
         MethodSignature signature = methodModel.signature;
 
@@ -158,7 +173,7 @@ public class ReifiedCodeGen {
                     specializeGenericTexts(
                             pair._value.TypeElements.stream(),
                             generics)
-                    .forEach(it -> argTexts.add(it));
+                            .forEach(it -> argTexts.add(it));
                     argTexts.add(" ");
                     argTexts.add(pair.getKey());
                     String argument = Joiner.on("").join(argTexts);
@@ -167,7 +182,7 @@ public class ReifiedCodeGen {
         ).collect(Collectors.toList());
         String joinedTexts = Joiner.on(", ").join(argumentTexts);
         stringBuilder.append(joinedTexts)
-                .append(") {\n");
+                .append(") {");
     }
 
 }

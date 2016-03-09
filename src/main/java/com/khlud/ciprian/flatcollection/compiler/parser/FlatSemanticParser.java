@@ -31,7 +31,7 @@ public class FlatSemanticParser {
 
         addHandler("flat", new FlatSemanticMatcher());
         addHandler("class", new ClassSemanticMatcher());
-        addHandler("define", new DefineSemanticMatcher());
+        addHandler("where", new DefineSemanticMatcher());
         addHandler("sub", new MethodSemanticMatcher());
         addHandler("const", new ConstSemanticMatcher());
         addHandler("each", new EachSemanticMatcher());

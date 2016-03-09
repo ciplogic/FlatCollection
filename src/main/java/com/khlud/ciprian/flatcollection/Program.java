@@ -24,7 +24,7 @@ public class Program {
         Program p = new Program();
         p.parseFlatFile();
 
-        runCompiler();
+        //runCompiler();
     }
 
     void parseFlatFile() throws Exception {
