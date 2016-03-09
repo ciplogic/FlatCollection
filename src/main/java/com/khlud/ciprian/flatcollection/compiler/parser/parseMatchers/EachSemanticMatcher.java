@@ -7,6 +7,7 @@ import com.khlud.ciprian.flatcollection.compiler.preParser.FoldedMacro;
  * Created by Ciprian on 3/5/2016.
  */
 public class EachSemanticMatcher extends FoldParseHandler {
+
     @Override
     public void parseMacro(NodeModel nodeModel, FoldedMacro macro) {
 

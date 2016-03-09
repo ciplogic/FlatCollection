@@ -14,15 +14,16 @@ import static com.khlud.ciprian.flatcollection.compiler.parser.FlatSemanticParse
  */
 public class FlatSemanticMatcher
         extends FoldParseHandler {
+
     @Override
     public void parseMacro(NodeModel nodeModel, FoldedMacro macro) {
 
-        ProgramModel programModel = (ProgramModel)nodeModel;
-        List<String> attributes =  getIdentifiers( macro._attributeTokens);
+        ProgramModel programModel = (ProgramModel) nodeModel;
+        List<String> attributes = getIdentifiers(macro._attributeTokens);
 
-        List<String> children =  getIdentifiers( macro._childrenTokens);
-        String childrenType = children.get(children.size()-1);
-        children.remove(children.size()-1);
+        List<String> children = getIdentifiers(macro._childrenTokens);
+        String childrenType = children.get(children.size() - 1);
+        children.remove(children.size() - 1);
 
         FlatModel flatDescription = new FlatModel(attributes.get(0), children, childrenType);
         programModel.addFlatType(flatDescription);

@@ -18,6 +18,7 @@ import static java.lang.System.out;
  * Created by Ciprian on 2/29/2016.
  */
 public class FlatSemanticParser {
+
     public ProgramModel _programModel = new ProgramModel();
 
     public ProgramModel get_programModel() {
@@ -26,8 +27,7 @@ public class FlatSemanticParser {
 
     static Map<String, IFoldParseHandler> _handlers = new HashMap<>();
 
-
-    public static void initialize(FlatPreParser preParser){
+    public static void initialize(FlatPreParser preParser) {
 
         addHandler("flat", new FlatSemanticMatcher());
         addHandler("class", new ClassSemanticMatcher());
@@ -39,6 +39,7 @@ public class FlatSemanticParser {
         addHandler("var", new VarSemanticMatcher());
         addHandler("validate", new ValidateSemanticMatcher());
         addHandler("specialize", new SpecializeSemanticMatcher());
+        addHandler("imports", new ImportsSemanticMatcher());
 
         preParser.initialize(_handlers.keySet().stream());
     }
@@ -47,27 +48,26 @@ public class FlatSemanticParser {
         _handlers.put(tokenName, handler);
     }
 
-    public static List<String> getIdentifiers(List<TokenDefinition> tokens){
+    public static List<String> getIdentifiers(List<TokenDefinition> tokens) {
         return TokenDefinition.getTokensOfKind(tokens, FlatTokenKind.Identifier);
     }
 
     public static void parseMacro(NodeModel nodeModel, FoldedMacro macro) throws Exception {
-        String macroName =macro.getName();
-        if(!_handlers.containsKey(macroName))
-            throw new Exception("Macro: '"+ macroName +"' not found");
+        String macroName = macro.getName();
+        if (!_handlers.containsKey(macroName)) {
+            throw new Exception("Macro: '" + macroName + "' not found");
+        }
         IFoldParseHandler handler = _handlers.get(macroName);
-        out.println("Macro: '"+ macroName +"' found and is parsed");
+        out.println("Macro: '" + macroName + "' found and is parsed");
         handler.parseMacro(nodeModel, macro);
     }
-
-
 
     public void parseMacros(List<FoldedMacro> foldedMacros) throws Exception {
         parse(_programModel, foldedMacros);
     }
 
     public static void parse(NodeModel nodeModel, List<FoldedMacro> macros) throws Exception {
-        for(FoldedMacro macro:macros){
+        for (FoldedMacro macro : macros) {
             parseMacro(nodeModel, macro);
         }
     }

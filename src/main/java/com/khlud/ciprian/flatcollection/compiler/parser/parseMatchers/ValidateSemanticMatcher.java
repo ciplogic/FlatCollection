@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class ValidateSemanticMatcher
         extends FoldParseHandler {
+
     @Override
     public void parseMacro(NodeModel nodeModel, FoldedMacro macro) {
         List<List<TokenDefinition>> rowDefinitions = splitTokensInRows(macro._childrenTokens);

@@ -16,13 +16,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static com.khlud.ciprian.flatcollection.compiler.codegen.ReifiedUtils.specializeGenericTexts;
 import static com.khlud.ciprian.flatcollection.compiler.codegen.ReifiedUtils.specializeGenerics;
 import static java.lang.System.out;
 
-/**
- * Created by Ciprian on 3/4/2016.
- */
 public class ReifiedCodeGen {
+
     public void generateCode(String path, ProgramModel programModel) {
         OsUtils.createPath(path);
 
@@ -49,23 +48,22 @@ public class ReifiedCodeGen {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, String> generics = buildArguments(classModel, specialization);
         generateDefinitions(classModel, generics);
+        String combinedClassName = className + translateGenericList(classModel.genericArguments, generics, "");
         stringBuilder
                 .append("class ")
-                .append(className)
-                .append(translateGenericList(classModel.genericArguments, generics, ""));
+                .append(combinedClassName);
 
         stringBuilder.append("{ \n");
 
         ReifiedUtils.writeVariables(classModel.Variables, generics, stringBuilder);
         ReifiedUtils.writeConstants(classModel.Constants, generics, stringBuilder);
-        writeMethods(classModel.Methods, generics, stringBuilder);
-
+        writeMethods(classModel.Methods, generics, combinedClassName, stringBuilder);
 
         stringBuilder.append("}\n");
 
         out.println(stringBuilder);
+        OsUtils.writeAllText(combinedClassName + ".java", stringBuilder.toString());
     }
-
 
     private void generateDefinitions(ClassModel classModel, Map<String, String> generics) throws Exception {
         ProgramModel programModel = (ProgramModel) classModel._parent;
@@ -74,7 +72,6 @@ public class ReifiedCodeGen {
 
             String resolvedValue = resolveExpression(programModel, expressionValue, generics);
             generics.put(definition.getKey(), resolvedValue);
-            //programModel.locate();
         }
     }
 
@@ -111,11 +108,11 @@ public class ReifiedCodeGen {
         return result;
     }
 
-    private void writeMethods(List<MethodModel> Methods, Map<String, String> generics, StringBuilder stringBuilder) {
+    private void writeMethods(List<MethodModel> Methods, Map<String, String> generics, String className, StringBuilder stringBuilder) {
         Methods.stream()
                 .forEach(
                         methodModel -> {
-                            writeMethodSignature(methodModel, generics, stringBuilder);
+                            writeMethodSignature(methodModel, generics, className, stringBuilder);
                             writeMethodBody(methodModel, generics, stringBuilder);
                             stringBuilder.append("}\n");
                         }
@@ -128,8 +125,9 @@ public class ReifiedCodeGen {
         List<TokenDefinition> specializedBody = specializeGenerics(bodyTokens, generics);
         specializedBody.stream()
                 .forEach(token -> {
-                    if (token.Kind == FlatTokenKind.Eoln)
+                    if (token.Kind == FlatTokenKind.Eoln) {
                         token.Content = "\n";
+                    }
                 });
         specializedBody.stream().forEach(
                 token -> {
@@ -139,20 +137,28 @@ public class ReifiedCodeGen {
 
     }
 
-    private void writeMethodSignature(MethodModel methodModel, Map<String, String> generics, StringBuilder stringBuilder) {
+    private void writeMethodSignature(MethodModel methodModel, Map<String, String> generics, String className, StringBuilder stringBuilder) {
         stringBuilder.append(" public ");
         MethodSignature signature = methodModel.signature;
+
         out.println("Writing signature: " + methodModel._parent.name + "." + signature);
-        List<String> returnType =
-                ReifiedUtils.specializeGenericWords(signature.returnType, generics);
+        List<String> returnType
+                = ReifiedUtils.specializeGenericWords(signature.returnType, generics);
 
-        ReifiedUtils.writeTexts(stringBuilder, returnType.stream());
+        if (signature.isConstructor) {
+            stringBuilder.append(" ").append(className).append("(");
+        } else {
+            ReifiedUtils.writeTexts(stringBuilder, returnType.stream());
+            stringBuilder.append(" ").append(signature.name).append("(");
+        }
 
-        stringBuilder.append(" ").append(signature.name).append("(");
         List<String> argumentTexts = signature.arguments.stream().map(
                 pair -> {
                     List<String> argTexts = new ArrayList<>();
-                    argTexts.add(pair._value.getSimpleName());
+                    specializeGenericTexts(
+                            pair._value.TypeElements.stream(),
+                            generics)
+                    .forEach(it -> argTexts.add(it));
                     argTexts.add(" ");
                     argTexts.add(pair.getKey());
                     String argument = Joiner.on("").join(argTexts);

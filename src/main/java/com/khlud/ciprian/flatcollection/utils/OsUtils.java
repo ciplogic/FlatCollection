@@ -52,8 +52,7 @@ public class OsUtils {
         return GetStringsOfArray(resultList);
     }
 
-
-    public static String pathCombine(String... args){
+    public static String pathCombine(String... args) {
         return Joiner.on("/").join(args);
     }
 

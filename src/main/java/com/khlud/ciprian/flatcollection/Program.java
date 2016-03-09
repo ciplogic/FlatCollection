@@ -8,14 +8,10 @@ package com.khlud.ciprian.flatcollection;
 import com.google.gson.Gson;
 import com.khlud.ciprian.flatcollection.compiler.ReifiedCompiler;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
-import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
-import com.khlud.ciprian.flatcollection.compiler.preParser.FlatPreParser;
-import com.khlud.ciprian.flatcollection.compiler.preParser.FoldedMacro;
 import com.khlud.ciprian.flatcollection.model.CompilerConfig;
 import com.khlud.ciprian.flatcollection.utils.OsUtils;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

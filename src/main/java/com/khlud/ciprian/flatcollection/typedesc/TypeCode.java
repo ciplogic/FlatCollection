@@ -1,7 +1,5 @@
 package com.khlud.ciprian.flatcollection.typedesc;
 
-import javax.lang.model.element.TypeElement;
-
 /**
  * Created by Ciprian on 1/22/2016.
  */
@@ -17,8 +15,8 @@ public enum TypeCode {
     String,
     Object;
 
-    public static TypeCode getTypeCodeByName(String typeName){
-        switch (typeName){
+    public static TypeCode getTypeCodeByName(String typeName) {
+        switch (typeName) {
             case "byte":
                 return Byte;
             case "short":

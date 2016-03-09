@@ -1,5 +1,5 @@
 package com.khlud.ciprian.flatcollection.compiler.codeModel;
 
-public class InterfaceModel extends NodeModel{
+public class InterfaceModel extends NodeModel {
 
 }

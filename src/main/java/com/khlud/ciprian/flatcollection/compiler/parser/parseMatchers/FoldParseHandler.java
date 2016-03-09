@@ -14,21 +14,38 @@ import java.util.stream.Collectors;
  * Created by Ciprian on 3/2/2016.
  */
 public abstract class FoldParseHandler implements IFoldParseHandler {
-    void parseChildren(NodeModel nodeModel, FoldedMacro macro){
+
+    void parseChildren(NodeModel nodeModel, FoldedMacro macro) {
         try {
-            FlatSemanticParser.parse(nodeModel,macro._childrenMacros);
+            FlatSemanticParser.parse(nodeModel, macro._childrenMacros);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected List<String> tokensToContentList(List<TokenDefinition> tokensList, boolean skipSpaces){
+    protected static List<List<String>> getListsOfTexts(List<List<TokenDefinition>> rowDefinitions, boolean skipSpaces) {
+        List<List<String>> definitions = new ArrayList<>();
+        rowDefinitions.stream().forEach(
+                row -> {
+                    List<String> tokenContent = tokensToContentList(row, skipSpaces);
+                    if (tokenContent.size() == 0) {
+                        return;
+                    }
+
+                    definitions.add(tokenContent);
+                }
+        );
+        return definitions;
+    }
+
+    protected static List<String> tokensToContentList(List<TokenDefinition> tokensList, boolean skipSpaces) {
         List<String> definition = tokensList.stream()
-                .filter(tok -> skipSpaces? tok.Kind!=FlatTokenKind.Space :true)
-                .map(token->token.Content)
+                .filter(tok -> skipSpaces ? tok.Kind != FlatTokenKind.Space : true)
+                .map(token -> token.Content)
                 .collect(Collectors.toList());
         return definition;
     }
+
     List<List<TokenDefinition>> splitTokensInParts(List<TokenDefinition> tokens, FlatTokenKind tokenKind) {
         List<List<TokenDefinition>> rowsResult = new ArrayList<>();
 
@@ -44,7 +61,7 @@ public abstract class FoldParseHandler implements IFoldParseHandler {
             }
         }
 
-        if(rowData.size()>0){
+        if (rowData.size() > 0) {
             rowsResult.add(rowData);
         }
         return rowsResult;

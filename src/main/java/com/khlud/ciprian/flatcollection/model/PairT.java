@@ -4,6 +4,7 @@ package com.khlud.ciprian.flatcollection.model;
  * Created by Ciprian on 2/27/2016.
  */
 public class PairT<K, V> {
+
     public K _key;
     public V _value;
 

@@ -15,7 +15,7 @@ public class ReifiedUtils {
 
     public static List<TokenDefinition> specializeGenerics(List<TokenDefinition> tokens, Map<String, String> generics) {
         List<TokenDefinition> result = tokens.stream()
-            .map(token -> {
+                .map(token -> {
                     String newName = generics.getOrDefault(token.Content, token.Content);
                     TokenDefinition cloneToken = token.clone();
                     if ("@".equals(newName)) {
@@ -24,36 +24,57 @@ public class ReifiedUtils {
                     cloneToken.Content = newName;
                     return cloneToken;
                 }
-            ).collect(Collectors.toList());
+                ).collect(Collectors.toList());
         return result;
     }
 
-    public static void writeVariables(List<List<TokenDefinition>> variables, Map<String, String> generics, StringBuilder stringBuilder) {
+    public static List<String> specializeGenericTexts(List<String> tokens, Map<String, String> generics) {
+        List<String> result = specializeGenericTexts(tokens.stream(), generics)
+                .collect(Collectors.toList());
+        return result;
+    }
+
+    public static Stream<String> specializeGenericTexts(Stream<String> tokens, Map<String, String> generics) {
+        Stream<String> result = tokens
+                .map(content -> {
+                    String newName = generics.getOrDefault(content, content);
+
+                    if ("@".equals(newName)) {
+                        newName = "";
+                    }
+                    return newName;
+                }
+                );
+        return result;
+    }
+
+    public static void writeVariables(List<List<String>> variables, Map<String, String> generics, StringBuilder stringBuilder) {
         variables.stream()
                 .forEach(
                         rowVariables -> {
-                            List<TokenDefinition> tokensGenerics = specializeGenerics(rowVariables, generics);
+                            List<String> tokensGenerics = specializeGenericTexts(rowVariables, generics);
+
                             tokensGenerics.stream()
-                                    .forEach(
-                                            it -> stringBuilder.append(it.Content)
-                                    );
+                            .forEach(
+                                    it -> stringBuilder.append(it)
+                            );
                             stringBuilder.append(";\n");
                         }
                 );
 
     }
 
-    public static void writeConstants(List<List<TokenDefinition>> variables, Map<String, String> generics, StringBuilder stringBuilder) {
+    public static void writeConstants(List<List<String>> variables, Map<String, String> generics, StringBuilder stringBuilder) {
         variables.stream()
                 .forEach(
                         rowVariables -> {
-                            List<TokenDefinition> tokensGenerics = specializeGenerics(rowVariables, generics);
+                            List<String> tokensGenerics = specializeGenericTexts(rowVariables, generics);
 
                             stringBuilder.append("static final ");
                             tokensGenerics.stream()
-                                    .forEach(
-                                            it -> stringBuilder.append(it.Content)
-                                    );
+                            .forEach(
+                                    it -> stringBuilder.append(it)
+                            );
                             stringBuilder.append(";\n");
                         }
                 );
@@ -62,19 +83,20 @@ public class ReifiedUtils {
     public static List<String> specializeGenericWords(TypeDescription tokens, Map<String, String> generics) {
         List<String> result = tokens.TypeElements.stream()
                 .map(content -> {
-                            if ("@".equals(content))
-                                return "";
-                            String newName = generics.getOrDefault(content, content);
+                    if ("@".equals(content)) {
+                        return "";
+                    }
+                    String newName = generics.getOrDefault(content, content);
 
-                            return newName;
-                        }
+                    return newName;
+                }
                 ).collect(Collectors.toList());
         return result;
     }
 
     public static void writeTexts(StringBuilder stringBuilder, Stream<String> stream) {
-        stream.forEach(it ->
-                stringBuilder.append(it)
+        stream.forEach(it
+                -> stringBuilder.append(it)
         );
     }
 }

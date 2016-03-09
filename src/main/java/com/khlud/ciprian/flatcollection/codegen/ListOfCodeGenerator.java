@@ -70,16 +70,16 @@ public class ListOfCodeGenerator {
         valuesView.put("typeField", _description.fieldTypeName);
         Arrays.stream(_description.fieldNames).forEach(
                 field
-                        -> {
-                    valuesView.put("fieldName", field);
-                    valuesView.put("index", intToString(index[0]));
-                    ModelAndView modelAndView = new ModelAndView(valuesView, "fieldGetterSetter.mustache");
-                    String fieldText = _engineArrayList.render(modelAndView);
-                    sb.append(fieldText);
+                -> {
+            valuesView.put("fieldName", field);
+            valuesView.put("index", intToString(index[0]));
+            ModelAndView modelAndView = new ModelAndView(valuesView, "fieldGetterSetter.mustache");
+            String fieldText = _engineArrayList.render(modelAndView);
+            sb.append(fieldText);
 
-                    index[0]++;
+            index[0]++;
 
-                });
+        });
 
         return sb.toString();
     }

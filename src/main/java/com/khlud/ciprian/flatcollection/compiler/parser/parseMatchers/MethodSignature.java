@@ -8,33 +8,42 @@ import java.util.List;
 
 /**
  * Created by Ciprian on 3/2/2016.
- */ public class MethodSignature {
+ */
+public class MethodSignature {
+
     public String name;
+    public boolean isConstructor;
     public List<PairT<String, TypeDescription>> arguments = new ArrayList<>();
     public TypeDescription returnType = new TypeDescription();
 
-    public void buildArguments(List<String> arguments){
-        if(arguments.size()==0)
+    public void buildArguments(List<String> arguments) {
+        if (arguments.size() == 0) {
             return;
+        }
         int startPos = 0;
         int pos = 0;
-        for(String arg: arguments){
-            if(",".equals(arg)){
-                TypeDescription typeDescription = new TypeDescription(arguments, startPos, pos-2);
-                PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos-1), typeDescription);
+        for (String arg : arguments) {
+            if (",".equals(arg)) {
+                TypeDescription typeDescription = new TypeDescription(arguments, startPos, pos - 2);
+                PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos - 1), typeDescription);
                 this.arguments.add(argument);
-                startPos = pos+1;
+                startPos = pos + 1;
 
             }
             pos++;
         }
-        TypeDescription typeDescription = new TypeDescription(arguments, startPos, pos-2);
-        PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos-1), typeDescription);
+        TypeDescription typeDescription = new TypeDescription(arguments, startPos, pos - 2);
+        PairT<String, TypeDescription> argument = new PairT<>(arguments.get(pos - 1), typeDescription);
         this.arguments.add(argument);
     }
 
     @Override
     public String toString() {
-        return name + "("+ arguments.size()+")";
+        return name + "(" + arguments.size() + ")";
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        isConstructor = "initialize".equals(name);
     }
 }

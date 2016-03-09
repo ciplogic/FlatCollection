@@ -2,7 +2,6 @@ package com.khlud.ciprian.flatcollection.model;
 
 import com.khlud.ciprian.flatcollection.typedesc.TypeCode;
 import com.khlud.ciprian.flatcollection.utils.ReflectionResolver;
-import com.khlud.ciprian.flatcollection.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import static com.khlud.ciprian.flatcollection.utils.StringUtils.indent;
  * Created by Ciprian on 2/13/2016.
  */
 public class PrimitiveFieldCollector {
+
     private static boolean isNonObjectType(Class<?> clazz) {
         String name = clazz.getCanonicalName();
         TypeCode typeCode = TypeCode.getTypeCodeByName(name);
@@ -27,18 +27,19 @@ public class PrimitiveFieldCollector {
         Class fullType = resolver.getClassByFullName(typeName);
         List<Field> fields = getFieldsAsList(fullType);
         List<PairT<Field, String>> populateFieldsList = new ArrayList<>();
-        for (Field field : fields)
+        for (Field field : fields) {
             populateFields(populateFieldsList, "", field);
-        if(populateFieldsList.size()==0)
+        }
+        if (populateFieldsList.size() == 0) {
             return null;
+        }
         CompilerLayoutDescription result = new CompilerLayoutDescription();
         result.typeName = fullType.getSimpleName();
 
-
-        List<String> combinedFieldNames =
-                populateFieldsList.stream()
-                        .map(pair ->pair.getValue() + indent(pair.getKey().getName()))
-                        .collect(Collectors.toList());
+        List<String> combinedFieldNames
+                = populateFieldsList.stream()
+                .map(pair -> pair.getValue() + indent(pair.getKey().getName()))
+                .collect(Collectors.toList());
         result.fields = toStringArray(combinedFieldNames);
         result.fieldType = populateFieldsList.get(0).getKey().getType().getSimpleName();
 

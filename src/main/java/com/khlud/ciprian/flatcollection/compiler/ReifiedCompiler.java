@@ -16,19 +16,20 @@ import java.util.List;
  * @author Ciprian
  */
 public class ReifiedCompiler {
+
     public ReifiedLexer lexer = new ReifiedLexer();
     FlatSemanticParser semanticParser = new FlatSemanticParser();
     FlatPreParser preParser = new FlatPreParser();
     ReifiedCodeGen codeGen = new ReifiedCodeGen();
 
-    public void initialize(){
+    public void initialize() {
         lexer.initialize();
         semanticParser.initialize(preParser);
     }
 
     public List<List<TokenDefinition>> tokenize(List<String> lines) throws Exception {
         List<List<TokenDefinition>> rowTokens = new ArrayList<>();
-        for(String line: lines){
+        for (String line : lines) {
             List<TokenDefinition> tokens = lexer.tokenizeRow(line);
             rowTokens.add(tokens);
         }
@@ -46,7 +47,7 @@ public class ReifiedCompiler {
         return semanticParser;
     }
 
-    public ProgramModel programModel(){
+    public ProgramModel programModel() {
         return semanticParser.get_programModel();
     }
 

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * Created by Ciprian on 2/27/2016.
  */
 public class ReifiedLexer {
+
     List<ITokenMatcher> _matchers = new ArrayList<>();
 
     public void initialize() {
@@ -28,7 +29,6 @@ public class ReifiedLexer {
 
         registerReservedWord("<", FlatTokenKind.LessThan);
         registerReservedWord(">", FlatTokenKind.GreaterThan);
-
 
         registerReservedWord("*", FlatTokenKind.Mul);
         registerReservedWord("/", FlatTokenKind.Div);
@@ -67,8 +67,8 @@ public class ReifiedLexer {
 
         List<List<TokenDefinition>> tokens = tokenize(lines);
         List<TokenDefinition> tokenFlat = new ArrayList<>();
-        tokens.stream().forEach((collection) ->
-                tokenFlat.addAll(collection.stream().filter(
+        tokens.stream().forEach((collection)
+                -> tokenFlat.addAll(collection.stream().filter(
                         tokenDefinition -> !skipSpaces || tokenDefinition.Kind != FlatTokenKind.Space)
                         .collect(Collectors.toList())));
         return tokenFlat;

@@ -12,12 +12,17 @@ import java.util.List;
  */
 public class VarSemanticMatcher extends FoldParseHandler {
 
-
     @Override
     public void parseMacro(NodeModel nodeModel, FoldedMacro macro) {
         List<List<TokenDefinition>> rowDefinitions = splitTokensInRows(macro._childrenTokens);
 
         ClassModel classModel = (ClassModel) nodeModel;
-        classModel.Variables = rowDefinitions;
+        parseRows(classModel, rowDefinitions);
+    }
+
+    private void parseRows(ClassModel classModel, List<List<TokenDefinition>> rowDefinitions) {
+        List<List<String>> definitions = getListsOfTexts(rowDefinitions, true);
+        definitions.stream().forEach(list -> list.add(list.size() - 1, " "));
+        classModel.Variables = definitions;
     }
 }

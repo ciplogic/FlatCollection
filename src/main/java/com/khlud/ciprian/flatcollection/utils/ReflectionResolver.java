@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-
 public class ReflectionResolver {
 
     public List<String> Imports = new ArrayList<>();
@@ -65,11 +64,12 @@ public class ReflectionResolver {
             return FixedTypeNames.get(typeName);
         }
 
-
         for (String imprt : Imports) {
             String baseName = imprt + "." + typeName;
             Class<?> clazz = getClassByFullName(baseName);
-            if (clazz != null) return clazz;
+            if (clazz != null) {
+                return clazz;
+            }
         }
         return null;
     }
