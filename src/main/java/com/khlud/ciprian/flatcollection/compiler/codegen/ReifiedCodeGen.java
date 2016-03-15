@@ -51,12 +51,14 @@ public class ReifiedCodeGen {
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> generics = buildArguments(classModel, specialization);
         generateDefinitions(programModel, classModel, generics);
-        writeImports(classModel, stringBuilder);
-        String combinedClassName = className + translateGenericList(classModel.GenericArgs, generics, "");
         stringBuilder
                 .append("package ")
                 .append(packageModel._typeDescription.getFullName())
-                .append(";\n");
+                .append(";\n\n");
+
+        writeImports(classModel, stringBuilder);
+        String combinedClassName = className + translateGenericList(classModel.GenericArgs, generics, "");
+
         stringBuilder
                 .append("public class ")
                 .append(combinedClassName);

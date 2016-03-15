@@ -45,30 +45,4 @@ public class Program {
 
     }
 
-    private static void runCompiler() throws Exception {
-        FlatTypeCodeGen compiler = new FlatTypeCodeGen();
-
-        CompilerConfig config = readConfig();
-
-        Arrays.stream(config.Types).forEach(typeDesc -> {
-            compiler.buildType(typeDesc.typeName, config.outputPath);
-        });
-        Arrays.stream(config.Layouts).forEach(layout -> {
-            ClassExtractor.WriteLayoutToPath(config.outputPath, layout);
-        });
-
-        System.out.println("Success");
-    }
-
-    public static CompilerConfig readConfig() throws Exception {
-        CompilerConfig config;
-        Gson gson = new Gson();
-        String json = OsUtils.readAllText("flatcfg.json");
-        if (OsUtils.isNullOrEmpty(json)) {
-            throw new Exception("define types inside flatc.conf");
-        } else {
-            config = gson.fromJson(json, CompilerConfig.class);
-        }
-        return config;
-    }
 }
