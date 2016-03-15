@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.khlud.ciprian.flatcollection.compiler.codegen.ReifiedUtils.specializeGenericTexts;
 import static com.khlud.ciprian.flatcollection.compiler.codegen.ReifiedUtils.specializeGenerics;
@@ -30,27 +29,34 @@ public class ReifiedCodeGen {
     }
 
     private void specializeProgram(ProgramModel programModel) {
-        for (SpecializeModel specializeModel : programModel.Specializations) {
-            specialize(specializeModel);
+        Iterable<SpecializeModel> specializations = programModel.getSpecializations();
+        for (SpecializeModel specializeModel : specializations) {
+            specialize(programModel, specializeModel);
         }
     }
 
-    private void specialize(SpecializeModel specializeModel) {
+    private void specialize(ProgramModel programModel, SpecializeModel specializeModel) {
         try {
-            specializeType(specializeModel.definedClass, specializeModel.specializations);
+            specializeType(programModel, specializeModel.definedClass, specializeModel.specializations);
         } catch (Exception ex) {
             Logger.getLogger(ReifiedCodeGen.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    private void specializeType(ClassModel classModel, List<String> specialization) throws Exception {
+    private void specializeType(ProgramModel programModel, ClassModel classModel, List<String> specialization) throws Exception {
         String className = classModel.name;
+        PackageModel packageModel = (PackageModel) classModel._parent;
+
         StringBuilder stringBuilder = new StringBuilder();
         Map<String, Object> generics = buildArguments(classModel, specialization);
-        generateDefinitions(classModel, generics);
+        generateDefinitions(programModel, classModel, generics);
         writeImports(classModel, stringBuilder);
-        String combinedClassName = className + translateGenericList(classModel.genericArguments, generics, "");
+        String combinedClassName = className + translateGenericList(classModel.GenericArgs, generics, "");
+        stringBuilder
+                .append("package ")
+                .append(packageModel._typeDescription.getFullName())
+                .append(";\n");
         stringBuilder
                 .append("public class ")
                 .append(combinedClassName);
@@ -79,8 +85,7 @@ public class ReifiedCodeGen {
                 );
     }
 
-    private void generateDefinitions(ClassModel classModel, Map<String, Object> generics) throws Exception {
-        ProgramModel programModel = (ProgramModel) classModel._parent;
+    private void generateDefinitions(ProgramModel programModel, ClassModel classModel, Map<String, Object> generics) throws Exception {
         for (PairT<String, List<String>> definition : classModel.Definitions) {
             List<String> expressionValue = definition.getValue();
 
@@ -116,7 +121,7 @@ public class ReifiedCodeGen {
     private Map<String, Object> buildArguments(ClassModel classModel, List<String> specialization) {
         Map<String, Object> result = new HashMap<>();
         int pos = 0;
-        for (String genericName : classModel.genericArguments) {
+        for (String genericName : classModel.GenericArgs) {
             result.put(genericName, specialization.get(pos));
             pos++;
         }
@@ -139,15 +144,15 @@ public class ReifiedCodeGen {
         List<TokenDefinition> bodyTokens = methodModel.body;
         List<TokenDefinition> specializedBody = specializeGenerics(bodyTokens, generics);
         specializedBody.stream()
-                .forEach(token -> {
-                    if (token.Kind == FlatTokenKind.Eoln) {
-                        token.Content = "\n";
-                    }
-                });
-        specializedBody.stream().forEach(
-                token -> {
-                    stringBuilder.append(token.Content);
+            .forEach(token -> {
+                if (token.Kind == FlatTokenKind.Eoln) {
+                    token.Content = "\n";
                 }
+            });
+        specializedBody.stream().forEach(
+            token -> {
+                stringBuilder.append(token.Content);
+            }
         );
 
     }
@@ -164,7 +169,7 @@ public class ReifiedCodeGen {
             stringBuilder.append(" ").append(className).append("(");
         } else {
             ReifiedUtils.writeTexts(stringBuilder, returnType.stream());
-            stringBuilder.append(" ").append(signature.name).append("(");
+            stringBuilder.append(" ").append(signature.methodName).append("(");
         }
 
         List<String> argumentTexts = signature.arguments.stream().map(

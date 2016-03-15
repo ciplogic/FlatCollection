@@ -13,9 +13,12 @@ public class MethodModel extends NodeModel {
     public MethodModel(ClassModel classModel) {
         _parent = classModel;
     }
+    public MethodModel(EachInClassModel classModel) {
+        _parent = classModel;
+    }
 
     public void setSignature(MethodSignature signature) {
         this.signature = signature;
-        name = signature.name;
+        name = signature.methodName.getFullName();
     }
 }

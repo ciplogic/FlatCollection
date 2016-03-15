@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class MethodSignature {
 
-    public String name;
     public boolean isConstructor;
     public List<PairT<String, TypeDescription>> arguments = new ArrayList<>();
     public TypeDescription returnType = new TypeDescription();
+    public TypeDescription methodName = new TypeDescription();
 
     public void buildArguments(List<String> arguments) {
         if (arguments.size() == 0) {
@@ -39,11 +39,11 @@ public class MethodSignature {
 
     @Override
     public String toString() {
-        return name + "(" + arguments.size() + ")";
+        return methodName.getFullName() + "(" + arguments.size() + ")";
     }
 
     public void setName(String name) {
-        this.name = name;
+        methodName = new TypeDescription(name);
         isConstructor = "initialize".equals(name);
     }
 }

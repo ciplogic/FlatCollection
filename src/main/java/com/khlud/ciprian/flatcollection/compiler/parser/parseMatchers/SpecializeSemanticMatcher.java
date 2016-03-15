@@ -1,6 +1,7 @@
 package com.khlud.ciprian.flatcollection.compiler.parser.parseMatchers;
 
 import com.khlud.ciprian.flatcollection.compiler.codeModel.NodeModel;
+import com.khlud.ciprian.flatcollection.compiler.codeModel.PackageModel;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.SpecializeModel;
 import com.khlud.ciprian.flatcollection.compiler.lexer.TokenDefinition;
@@ -18,7 +19,8 @@ public class SpecializeSemanticMatcher extends FoldParseHandler {
     @Override
     public void parseMacro(NodeModel nodeModel, FoldedMacro macro) {
         List<List<TokenDefinition>> rowDefinitions = splitTokensInRows(macro._childrenTokens);
-        ProgramModel programModel = (ProgramModel) nodeModel;
+        
+        PackageModel programModel = (PackageModel) nodeModel;
         List<String> attributes = getIdentifiers(macro._attributeTokens);
 
         List<String> children = getIdentifiers(macro._childrenTokens);

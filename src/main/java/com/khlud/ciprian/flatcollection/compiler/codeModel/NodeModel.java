@@ -1,5 +1,7 @@
 package com.khlud.ciprian.flatcollection.compiler.codeModel;
 
+import java.util.List;
+
 /**
  * Created by Ciprian on 2/29/2016.
  */
@@ -7,6 +9,7 @@ public abstract class NodeModel {
 
     public String name;
     public NodeModel _parent;
+    public List<String> GenericArgs;
 
     @Override
     public String toString() {
@@ -16,4 +19,6 @@ public abstract class NodeModel {
     public Object resolveExpression(String itemExpression) throws Exception {
         throw new Exception("Invalid expression");
     }
+
+
 }

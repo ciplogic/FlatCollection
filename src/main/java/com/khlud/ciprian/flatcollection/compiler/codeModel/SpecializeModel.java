@@ -19,7 +19,7 @@ public class SpecializeModel extends NodeModel {
     }
 
     public void processDefinitions() {
-        ProgramModel programModel = (ProgramModel) _parent;
+        PackageModel programModel = (PackageModel) _parent;
         definedClass = (ClassModel) programModel.locate(name);
     }
 }

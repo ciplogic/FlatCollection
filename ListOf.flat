@@ -1,116 +1,118 @@
-flat Point3D {
-  X, Y, Z: double
-}
 
-class ListOf<T> {
 
-    where {
-        TValue = T.valueType
-        countFields=T.countFields
+package FlatCollections {
+    flat Point3D {
+      X, Y, Z: double
     }
 
-    imports {
-        java.util.Arrays
-    }
-    var {
-        TValue[] _data
-        int _size
-        int _capacity
-    }
-    const {
-        int ItemCount = countFields
-    }
-    sub initialize {
-        setCapacity(10);
-    }
-    sub initialize(int capacity) {
-        setCapacity(capacity);
-    }
+    class ListOf<T> {
+        where {
+            TValue = T.valueType
+            countFields=T.countFields
+        }
 
-    sub setCapacity(int newSize){
-            int capacity = newSize*ItemCount;
-            if (capacity <= 0) {
-                capacity = 10*ItemCount;
+        imports {
+            java.util.Arrays
+        }
+        var {
+            TValue[] _data
+            int _size
+            int _capacity
+        }
+        const {
+            int ItemCount = countFields
+        }
+        sub initialize {
+            setCapacity(10);
+        }
+        sub initialize(int capacity) {
+            setCapacity(capacity);
+        }
+
+        sub setCapacity(int newSize){
+                int capacity = newSize*ItemCount;
+                if (capacity <= 0) {
+                    capacity = 10*ItemCount;
+                }
+                if (_data == null) {
+                    _data = new TValue[capacity];
+                } else {
+                    _data = Arrays.copyOf(_data, capacity);
+                }
+                _capacity = newSize;
             }
-            if (_data == null) {
-                _data = new TValue[capacity];
-            } else {
-                _data = Arrays.copyOf(_data, capacity);
+
+        sub getCursor(): FlatCursor@T {
+            return new FlatCursor@T(this, _size);
+        }
+
+        sub clear {
+            _size = 0;
+        }
+
+        sub add {
+            _size ++;
+            if(_capacity < _size){
+                setCapacity(2*_capacity);
             }
-            _capacity = newSize;
+        }
+        sub set(int index, TValue value){
+            _data[index]=value;
         }
 
-    sub getCursor(): FlatCursor@T {
-        return new FlatCursor@T(this, _size);
-    }
-
-    sub clear {
-        _size = 0;
-    }
-
-    sub add {
-        _size ++;
-        if(_capacity < _size){
-            setCapacity(2*_capacity);
+        sub get(int index): TValue{
+            return _data[index];
         }
     }
-    sub set(int index, TValue value){
-        _data[index]=value;
+
+    class FlatCursor<T> {
+        where {
+            TValue = T.valueType
+            countFields=T.countFields
+            fieldNames = T.fieldNames
+        }
+
+        var {
+            ListOf@T _list
+            int _size
+            int _offset
+        }
+        const {
+            int ItemCount = countFields
+        }
+        sub initialize(ListOf@T list, int size){
+            _list = list;
+            _offset = -ItemCount;
+            _size = size*ItemCount;
+        }
+
+        sub add {
+            _list.add();
+            move();
+        }
+
+        sub indexSet(int pos){
+            _offset = ItemCount*pos;
+        }
+
+        sub move():boolean{
+            _offset = _offset + ItemCount;
+            return _offset < _size;
+        }
+
+
+        each fieldNames : fieldName, index {
+            sub set@fieldName (TValue value) {
+                _list.set(_offset+ index,  value);
+            }
+
+            sub TValue get@fieldName () {
+                return _list.get(_offset+index)
+            }
+        }
+
     }
 
-    sub get(int index): TValue{
-        return _data[index];
-    }
+    specialize ListOf { Point3D }
+    specialize FlatCursor { Point3D }
 }
-
-class FlatCursor<T> {
-    where {
-        TValue = T.valueType
-        countFields=T.countFields
-        fieldNames = T.fieldNames
-    }
-
-    var {
-        ListOf@T _list
-        int _size
-        int _offset
-    }
-    const {
-        int ItemCount = countFields
-    }
-    sub initialize(ListOf@T list, int size){
-        _list = list;
-        _offset = -ItemCount;
-        _size = size*ItemCount;
-    }
-
-    sub add {
-        _list.add();
-        move();
-    }
-
-    sub indexSet(int pos){
-        _offset = ItemCount*pos;
-    }
-
-    sub move():boolean{
-        _offset = _offset + ItemCount;
-        return _offset < _size;
-    }
-
-
-    each fieldNames : fieldName, index {
-        sub set@fieldName (TValue value) {
-            _list.set(_offset+ index,  value);
-        }
-
-        sub TValue get@fieldName () {
-            return _list.get(_offset+index)
-        }
-    }
-
-}
-
-
-specialize ListOf { Point3D }
-specialize FlatCursor { Point3D }
