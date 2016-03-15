@@ -32,24 +32,4 @@ public class EachSemanticMatcher extends FoldParseHandler {
         }
     }
 
-    private MethodSignature buildSignature(List<String> arguments) {
-        MethodSignature signature = new MethodSignature();
-        signature.setName(arguments.get(0));
-        if (arguments.size() == 1) {
-            signature.returnType.setVoid();
-            return signature;
-        }
-        int openParenIndex = arguments.indexOf("(");
-
-        int closeParenIndex = arguments.indexOf(")");
-        if (openParenIndex > 0) {
-            List<String> tokensArguments = arguments.subList(openParenIndex + 1, closeParenIndex - openParenIndex + 1);
-            signature.buildArguments(tokensArguments);
-        }
-        if (arguments.size() > 2 && (closeParenIndex > 0)) {
-            signature.returnType.fillType(arguments, closeParenIndex + 2, arguments.size() - 1);
-            return signature;
-        }
-        return signature;
-    }
 }

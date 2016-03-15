@@ -68,11 +68,34 @@ public class ReifiedCodeGen {
         ReifiedUtils.writeVariables(classModel.Variables, generics, stringBuilder);
         ReifiedUtils.writeConstants(classModel.Constants, generics, stringBuilder);
         writeMethods(classModel.Methods, generics, combinedClassName, stringBuilder);
+        writeEach(classModel.EachModels, generics, combinedClassName, stringBuilder);
 
         stringBuilder.append("}\n");
 
         out.println(stringBuilder);
         OsUtils.writeAllText(combinedClassName + ".java", stringBuilder.toString());
+    }
+
+    private void writeEach(List<EachInClassModel> eachModels, Map<String, Object> generics, String combinedClassName, StringBuilder stringBuilder) {
+
+        eachModels.stream()
+                .forEach(
+                        each ->{
+                            int[] index = {0};
+                            List <String> eachFields = (List<String>) generics.get(each.CollectionName);
+                            eachFields.forEach(
+                                    eachField ->{
+                                        generics.put(each.ItemName, eachField);
+                                        generics.put(each.IndexName, Integer.toString(index[0]));
+                                        writeMethods(each.Methods, generics, combinedClassName, stringBuilder);
+
+                                        index[0]++;
+                                    }
+                            );
+                            generics.remove(each.ItemName);
+                            generics.remove(each.IndexName);
+                        }
+                );
     }
 
     private void writeImports(ClassModel classModel, StringBuilder stringBuilder) {
@@ -171,7 +194,13 @@ public class ReifiedCodeGen {
             stringBuilder.append(" ").append(className).append("(");
         } else {
             ReifiedUtils.writeTexts(stringBuilder, returnType.stream());
-            stringBuilder.append(" ").append(signature.methodName).append("(");
+            List<String> methodNameElements = new ArrayList<>();
+            specializeGenericTexts(
+                    signature.methodName.TypeElements.stream(),
+                    generics)
+                    .forEach(it -> methodNameElements.add(it));
+            String specializedMethodName = Joiner.on("").join(methodNameElements);
+            stringBuilder.append(" ").append(specializedMethodName).append("(");
         }
 
         List<String> argumentTexts = signature.arguments.stream().map(

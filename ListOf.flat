@@ -106,7 +106,7 @@ package FlatCollections {
                 _list.set(_offset+ index,  value);
             }
 
-            sub TValue get@fieldName () {
+            sub get@fieldName (): TValue {
                 return _list.get(_offset+index)
             }
         }

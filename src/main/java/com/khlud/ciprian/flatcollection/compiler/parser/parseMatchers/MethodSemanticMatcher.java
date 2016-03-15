@@ -24,9 +24,9 @@ public class MethodSemanticMatcher extends FoldParseHandler {
             method.body = macro._childrenTokens;
         } else
         if(nodeModel instanceof EachInClassModel) {
-
             EachInClassModel eachInClassModel = (EachInClassModel) nodeModel;
             MethodModel method = eachInClassModel.addMethod(signature);
+            method.body = macro._childrenTokens;
         }
     }
 
@@ -45,6 +45,9 @@ public class MethodSemanticMatcher extends FoldParseHandler {
                     IntStream.rangeClosed(openParenIndex+1, closeParenIndex-1)
                     .forEach(it -> tokensArguments.add(arguments.get(it)));
             signature.buildArguments(tokensArguments);
+            signature.methodName.TypeElements.clear();
+            IntStream.rangeClosed(0, openParenIndex-1)
+                    .forEach(it->signature.methodName.TypeElements.add(arguments.get(it) ));
         }
         if (arguments.size() > 2 && (closeParenIndex > 0)) {
             signature.returnType.fillType(arguments, closeParenIndex + 2, arguments.size() - 1);
