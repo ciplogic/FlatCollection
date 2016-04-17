@@ -1,0 +1,9 @@
+Parameters: [fieldName, index, valueType]
+
+public void set{{fieldName}} ({{valueType}} value) {
+_list.set(_offset+{{index}},  value);
+}
+
+public {{valueType}} get{{fieldName}} () {
+return _list.get(_offset+{{index}});
+}

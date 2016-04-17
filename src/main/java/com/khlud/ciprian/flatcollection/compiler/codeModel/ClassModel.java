@@ -18,7 +18,7 @@ public class ClassModel extends NodeModel {
 
     public List<MethodModel> Methods = new ArrayList<>();
 
-    public ClassModel(String className, List<String> genericArguments) {
+    public ClassModel(String className, List<TypeDescription> genericArguments) {
         GenericArgs = genericArguments;
         name = className;
     }

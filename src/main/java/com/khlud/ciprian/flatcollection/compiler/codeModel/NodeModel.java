@@ -9,7 +9,7 @@ public abstract class NodeModel {
 
     public String name;
     public NodeModel _parent;
-    public List<String> GenericArgs;
+    public List<TypeDescription> GenericArgs;
 
     @Override
     public String toString() {

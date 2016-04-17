@@ -20,29 +20,22 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.sparkjava:spark-template-mustache:1.0.0" level="project" />
-    <orderEntry type="library" name="Maven: com.github.spullara.mustache.java:compiler:0.8.15" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:16.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.spullara.mustache.java:compiler:jar-with-dependencies:0.9.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.5" level="project" />
+    <orderEntry type="library" name="Maven: net.openhft:compiler:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.6" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.sun.java:tools:1.8.0_60">
+        <CLASSES>
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_60/jre/../lib/tools.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: org.kohsuke.jetbrains:annotations:9.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.0.0-rc-1036" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-runtime:1.0.0-rc-1036" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.5" level="project" />
-    <orderEntry type="library" name="Maven: com.sparkjava:spark-core:2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.12" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-webapp:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-xml:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-server:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.0.5" level="project" />
   </component>
 </module>

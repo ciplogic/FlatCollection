@@ -1,0 +1,57 @@
+Parameters: [packageName, typeName, valueType, countFields, fieldNames]
+UserTemplates: []
+package {{packageName}};
+
+import java.util.Arrays;
+
+public class ArrayListOf{{typeName}} {
+{{valueType}}[] _data;
+int _size;
+int _capacity;
+
+final static int ItemCount = {{countFields}};
+
+public ArrayListOf{{typeName}}() {
+setCapacity(10);
+}
+public ArrayListOf{{typeName}}(int capacity) {
+setCapacity(capacity);
+}
+
+public void setCapacity(int newSize){
+int capacity = newSize*ItemCount;
+if(capacity <= 0) {
+capacity = 10*ItemCount;
+}
+if(_data == null){
+_data = new {{valueType}}[capacity];
+}else {
+_data = Arrays.copyOf(_data, capacity);
+}
+_capacity = newSize;
+}
+
+public FlatCursor{{typeName}} getCursor(){
+return new FlatCursor{{typeName}}(this, _size);
+}
+
+public void clear() {
+_size = 0;
+}
+
+public void add(){
+_size ++;
+if(_capacity < _size){
+setCapacity(2*_capacity);
+}
+}
+public void set(int index, {{valueType}} value){
+_data[index]=value;
+}
+
+public {{valueType}} get(int index){
+return _data[index];
+}
+}
+
+}

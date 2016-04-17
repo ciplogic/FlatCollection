@@ -24,7 +24,7 @@ public class PackageModel extends NodeModel{
     public List<InterfaceModel> InterfaceList = new ArrayList<>();
     public List<SpecializeModel> Specializations = new ArrayList<>();
 
-    public ClassModel addClassModel(String className, List<String> genericArgs){
+    public ClassModel addClassModel(String className, List<TypeDescription> genericArgs){
         ClassModel item = new ClassModel(className, genericArgs);
         item._parent = this;
         ClassList.add(item);

@@ -27,7 +27,7 @@ public class FlatSemanticParser {
 
     static Map<String, IFoldParseHandler> _handlers = new HashMap<>();
 
-    public static void initialize(FlatPreParser preParser) {
+    public void initialize(FlatPreParser preParser) {
 
         addHandler("flat", new FlatSemanticMatcher());
         addHandler("class", new ClassSemanticMatcher());

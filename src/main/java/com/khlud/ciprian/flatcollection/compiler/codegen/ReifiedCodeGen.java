@@ -129,7 +129,7 @@ public class ReifiedCodeGen {
         return result;
     }
 
-    private String translateGenericList(List<String> genericArguments, Map<String, Object> generics, String joinText) {
+    private String translateGenericList(List<TypeDescription> genericArguments, Map<String, Object> generics, String joinText) {
         List<String> translatedGenerics = genericArguments.stream()
                 .map(generic -> translateGeneric(generic, generics))
                 .collect(Collectors.toList());
@@ -137,8 +137,8 @@ public class ReifiedCodeGen {
         return Joiner.on(joinText).join(translatedGenerics);
     }
 
-    private String translateGeneric(String genericArgument, Map<String, Object> generics) {
-        Object description = generics.get(genericArgument);
+    private String translateGeneric(TypeDescription genericArgument, Map<String, Object> generics) {
+        Object description = generics.get(genericArgument.getSimpleName());
 
         return description.toString();
     }
@@ -146,8 +146,8 @@ public class ReifiedCodeGen {
     private Map<String, Object> buildArguments(ClassModel classModel, List<String> specialization) {
         Map<String, Object> result = new HashMap<>();
         int pos = 0;
-        for (String genericName : classModel.GenericArgs) {
-            result.put(genericName, specialization.get(pos));
+        for (TypeDescription genericName : classModel.GenericArgs) {
+            result.put(genericName.getSimpleName(), specialization.get(pos));
             pos++;
         }
         return result;
@@ -198,7 +198,7 @@ public class ReifiedCodeGen {
             specializeGenericTexts(
                     signature.methodName.TypeElements.stream(),
                     generics)
-                    .forEach(it -> methodNameElements.add(it));
+                    .forEach(methodNameElements::add);
             String specializedMethodName = Joiner.on("").join(methodNameElements);
             stringBuilder.append(" ").append(specializedMethodName).append("(");
         }
@@ -209,7 +209,7 @@ public class ReifiedCodeGen {
                     specializeGenericTexts(
                             pair._value.TypeElements.stream(),
                             generics)
-                            .forEach(it -> argTexts.add(it));
+                            .forEach(argTexts::add);
                     argTexts.add(" ");
                     argTexts.add(pair.getKey());
                     String argument = Joiner.on("").join(argTexts);
