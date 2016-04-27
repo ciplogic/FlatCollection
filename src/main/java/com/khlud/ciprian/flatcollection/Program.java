@@ -7,9 +7,8 @@ package com.khlud.ciprian.flatcollection;
 
 import com.khlud.ciprian.flatcollection.compiler.ReifiedCompiler;
 import com.github.mustachejava.*;
-import com.google.gson.Gson;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
-import com.khlud.ciprian.flatcollection.model.CompilerConfig;
+import com.khlud.ciprian.flatcollection.templating.TemplateMaster;
 import com.khlud.ciprian.flatcollection.utils.OsUtils;
 import java.io.IOException;
 import java.io.StringReader;
@@ -28,20 +27,20 @@ import java.util.logging.Logger;
 public class Program {
 
     public static void main(String[] args) throws Exception {
-        Program p = new Program();
-        p.parseMustache();
+      
+        
 
         TemplateMaster templateMaster = new TemplateMaster();
         String[] fieldNames = {"X", "Y"};
         Object[] objects = {"FlatCollections", "Point3D", "int", 3, fieldNames};
 
-        templateMaster.fillTemplate("ArrayListSection", objects);
+        templateMaster.fillTemplate("codeSections/FlatCursor", objects);
 
         //p.parseFlatFile();
         //p.runGeneratedCode();
         //runCompiler();
     }
-
+/*
     void parseMustache() throws IOException {
         Map<String, Object> scopes = new HashMap<>();
         scopes.put("name", "Mustache");
@@ -56,7 +55,7 @@ public class Program {
         String result = writer.getBuffer().toString();
         System.out.println("Result:" + result);
     }
-
+*/
     void parseFlatFile() throws Exception {
         ReifiedCompiler compiler = new ReifiedCompiler();
         compiler.initialize();

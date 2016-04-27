@@ -1,9 +1,9 @@
-Parameters: [fieldName, index, valueType]
+Parameters: index, itemName, valueType
 
-public void set{{fieldName}} ({{valueType}} value) {
+public void set{{itemName}} ({{valueType}} value) {
 _list.set(_offset+{{index}},  value);
 }
 
-public {{valueType}} get{{fieldName}} () {
+public {{valueType}} get{{itemName}} () {
 return _list.get(_offset+{{index}});
 }

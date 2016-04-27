@@ -5,7 +5,11 @@
  */
 package com.khlud.ciprian.flatcollection.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Ciprian
@@ -18,6 +22,31 @@ public class StringUtils {
             return _this;
         }
         return _this.substring(0, index);
+    }
+
+    public static List<String> split(String _this, char split, boolean removeEmpty){
+
+        char[] _thisData = _this.toCharArray();
+        int start = 0;
+        List<String> resultList = new ArrayList<>();
+
+        for(int cursor = 1; cursor<_thisData.length;cursor++){
+            char ch = _thisData[cursor];
+            if(ch ==split){
+                String itemString = new String(Arrays.copyOfRange(_thisData, start, cursor)) ;
+                resultList.add(itemString);
+                start = cursor+1;
+            }
+        }
+        String itemString = new String(Arrays.copyOfRange(_thisData, start, _thisData.length)) ;
+        resultList.add(itemString);
+
+        if(!removeEmpty)
+            return resultList;
+        return resultList.stream()
+                .filter(it->!it.isEmpty())
+                .collect(Collectors.toList());
+
     }
 
     public static final String substringAfterLast(String _this, String delimiter) {
@@ -55,7 +84,7 @@ public class StringUtils {
             if (isFirst) {
                 isFirst = false;
             } else {
-                sb.append(", ");
+                sb.append(separator);
             }
             sb.append(item);
         }

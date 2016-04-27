@@ -1,5 +1,4 @@
 %parameters: packageName, typeName, valueType, countFields, fieldNames
-%userTemplates: [fieldGetterSetter]
 
 package {{packageName}};
 
@@ -29,6 +28,6 @@ _offset = _offset + ItemCount;
 return _offset < _size;
 }
 
-%each(fieldNames, fieldGetterSetter, params: [valueType])
+%each: codesections/fieldGetterSetter; items: fieldNames; args: valueType
 
 }
