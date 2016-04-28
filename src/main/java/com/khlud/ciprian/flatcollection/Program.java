@@ -7,6 +7,7 @@ package com.khlud.ciprian.flatcollection;
 
 import com.khlud.ciprian.flatcollection.compiler.ReifiedCompiler;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
+import com.khlud.ciprian.flatcollection.flat_handlers.FlatObjectToList;
 import com.khlud.ciprian.flatcollection.templating.TemplateDescription;
 import com.khlud.ciprian.flatcollection.templating.TemplateMaster;
 import com.khlud.ciprian.flatcollection.utils.OsUtils;
@@ -22,13 +23,12 @@ import java.util.logging.Logger;
 public class Program {
 
     public static void main(String[] args) throws Exception {
-        TemplateMaster templateMaster = new TemplateMaster();
         List<String> fieldNames = Arrays.asList("X", "Y");
-        List<Object> objectArgs = Arrays.asList("FlatCollections", "Point3D", "int", 2, fieldNames);
 
-        TemplateDescription templateDescription = templateMaster.loadTemplate("codeSections/FlatCursor");
-        String renderedText = templateDescription.renderObjectList(objectArgs);
+        String renderedText = FlatObjectToList.writeFlatListCursor("FlatCollections", "Point3D", "int", fieldNames);
         System.out.println(renderedText);
+        String renderedArrayText = FlatObjectToList.writeFlatArrayList("FlatCollections", "Point3D", "int", fieldNames.size());
+        System.out.println(renderedArrayText);
 
         //p.parseFlatFile();
         //p.runGeneratedCode();

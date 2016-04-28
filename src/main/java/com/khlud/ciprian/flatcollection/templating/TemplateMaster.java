@@ -46,14 +46,4 @@ public class TemplateMaster {
         return result;
     }
 
-    public static TemplateDescription scanTemplate(String templateName) {
-
-        List<String> message = readResourceFile(templateName + ".mustache");
-
-        TemplateDescription templateDescription = new TemplateDescription();
-        templateDescription.fillData(message);
-
-        return templateDescription;
-    }
-
 }
