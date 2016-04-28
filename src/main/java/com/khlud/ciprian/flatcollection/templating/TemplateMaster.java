@@ -5,27 +5,22 @@
  */
 package com.khlud.ciprian.flatcollection.templating;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Ciprian
  */
 public class TemplateMaster {
 
-    public void fillTemplate(String arrayListSection, Object[] objects) {
+    public TemplateDescription fillTemplate(String arrayListSection, Object[] objects) {
             TemplateDescription template = scanTemplate(arrayListSection);
             System.out.println("Template: " + template);
+        return template;
 
     }
 
@@ -56,26 +51,6 @@ public class TemplateMaster {
         templateDescription.fillData(message);
 
         return templateDescription;
-    }/*
-
-        Map<String, Object> scopes = new HashMap<>();
-        scopes.put("name", "Mustache");
-        scopes.put("feature", new Feature("Perfect!"));
-
-        String templateContent = "{{name}}, {{feature.description}}!";
-        String result = TemplateDescription.renderTemplate(templateContent, scopes);
-        System.out.println("Result:" + result);
-
-        return templateDescription;
     }
-    */
 
-    void parseMustache() throws IOException {
-        Map<String, Object> scopes = new HashMap<>();
-        scopes.put("name", "Mustache");
-        scopes.put("feature", new Feature("Perfect!"));
-
-        String result = TemplateDescription.renderTemplate("{{name}}, {{feature.description}}!", scopes);
-        System.out.println("Result:" + result);
-    }
 }

@@ -8,6 +8,8 @@ package com.khlud.ciprian.flatcollection;
 import com.khlud.ciprian.flatcollection.compiler.ReifiedCompiler;
 import com.github.mustachejava.*;
 import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
+import com.khlud.ciprian.flatcollection.templating.EachTemplateDescription;
+import com.khlud.ciprian.flatcollection.templating.TemplateDescription;
 import com.khlud.ciprian.flatcollection.templating.TemplateMaster;
 import com.khlud.ciprian.flatcollection.utils.OsUtils;
 import java.io.IOException;
@@ -15,9 +17,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import net.openhft.compiler.CompilerUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,14 +27,21 @@ import java.util.logging.Logger;
 public class Program {
 
     public static void main(String[] args) throws Exception {
-      
-        
+
+        EachTemplateDescription ed = new EachTemplateDescription();
+        ed.scan("codeSections/fieldGetterSetter");
+        Map<String, Object> map =new HashMap<>();
+        map.put("valueType", "int");
+        String rendered = ed.buildTemplates(Arrays.asList("X", "Y") , map);
 
         TemplateMaster templateMaster = new TemplateMaster();
-        String[] fieldNames = {"X", "Y"};
-        Object[] objects = {"FlatCollections", "Point3D", "int", 3, fieldNames};
+        List<String> fieldNames = Arrays.asList("X", "Y");
+        Object[] objects = {"FlatCollections", "Point3D", "int", 2, fieldNames};
+        List<Object> objectArgs = Arrays.asList(objects);
 
-        templateMaster.fillTemplate("codeSections/FlatCursor", objects);
+        TemplateDescription templateDescription = templateMaster.fillTemplate("codeSections/FlatCursor", objects);
+        String renderedText = templateDescription.renderObjectList(objectArgs);
+        System.out.println(renderedText);
 
         //p.parseFlatFile();
         //p.runGeneratedCode();

@@ -21,14 +21,13 @@ public class TemplateDescription {
     private List<String> args = new ArrayList<>();
     private List<String> lines = new ArrayList<>();
 
-    public List<TemplateDescription> eachTemplates = new ArrayList<>();
+    public Map<String, EachTemplateDescription> eachTemplates = new HashMap<>();
 
     public List<String> getArgs() {
         return args;
     }
 
 
-    public Map<String, Object> templateMap = new HashMap<>();
 
 
     public void fillData(List<String> message) {
@@ -38,21 +37,15 @@ public class TemplateDescription {
         args = params.stream().map(String::trim).collect(Collectors.toList());
         message.remove(0);
 
+        lines.addAll(message);
         for (int i = 0; i < message.size(); i++) {
-            String row = message.get(i);
+            String row = message.get(i).trim();
             if (!row.startsWith("%each"))
                 continue;
             setupEachTemplate(i, row);
-
         }
 
-        lines.addAll(message);
     }
-
-    public void put(String key, Object obj) {
-        templateMap.put(key, obj);
-    }
-
 
     @NotNull
     public static String renderTemplate(String templateContent, Map<String, Object> scopes) {
@@ -63,6 +56,41 @@ public class TemplateDescription {
         mustache.execute(writer, scopes);
         writer.flush();
         return writer.getBuffer().toString();
+    }
+
+    public String renderObjectList(List<Object> arguments){
+        Map<String, Object> templateArgs = buildArgumentsMap(arguments, this.args);
+        for (String eachTemplatKey:
+                this.eachTemplates.keySet()) {
+            EachTemplateDescription eachTemplateDescription = eachTemplates.get(eachTemplatKey);
+            String itemsKey = eachTemplateDescription.getItems();
+            List<String> itemsNames = (List<String>)templateArgs.get(itemsKey);
+
+            Map<String, Object> eachArgumentsMap = new HashMap<>();
+            List<String> eachArgments = eachTemplateDescription.getArguments();
+            eachArgments.stream().forEach(
+                    eachArgment->{
+                        eachArgumentsMap.put(eachArgment, templateArgs.get(eachArgment));
+                    }
+            );
+
+            String eachInnerText = eachTemplateDescription.buildTemplates(itemsNames, eachArgumentsMap );
+            templateArgs.put(eachTemplatKey, eachInnerText);
+        }
+        return renderTemplateMap(templateArgs);
+    }
+
+    @NotNull
+    public static Map<String, Object> buildArgumentsMap(List<Object> arguments, List<String> argumentNames) {
+        Map<String, Object> templateArgs = new HashMap<>();
+        int argsSize = argumentNames.size();
+        for (int i = 0; i < argsSize; i++) {
+            String key = argumentNames.get(i);
+            Object value =arguments.get(i);
+            templateArgs.put(key,value);
+
+        }
+        return templateArgs;
     }
 
     public void setupEachTemplate(int i, String row) {
@@ -79,6 +107,21 @@ public class TemplateDescription {
 
         eachTemplateDescription.setItems(dict.get("items"));
         eachTemplateDescription.setArguments(dict.get("args"));
+        String templateName= "each_template_"+eachTemplates.size();
+        lines.set(i,"{{{"+ templateName+"}}}");
+        eachTemplates.put(templateName, eachTemplateDescription);
+    }
 
+    private String buildContent() {
+        StringBuilder resultBuilder = new StringBuilder();
+        for(String str:lines){
+            resultBuilder.append(str).append("\n\r");
+        }
+        return resultBuilder.toString();
+    }
+
+    public String renderTemplateMap(Map<String, Object> perTemplateMap) {
+        String content = buildContent();
+        return renderTemplate(content, perTemplateMap);
     }
 }

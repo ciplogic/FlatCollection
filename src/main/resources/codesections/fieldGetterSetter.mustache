@@ -1,9 +1,9 @@
 Parameters: index, itemName, valueType
 
-public void set{{itemName}} ({{valueType}} value) {
-_list.set(_offset+{{index}},  value);
-}
+    public void set{{itemName}} ({{valueType}} value) {
+        _list.set(_offset+{{index}},  value);
+    }
 
-public {{valueType}} get{{itemName}} () {
-return _list.get(_offset+{{index}});
-}
+    public {{valueType}} get{{itemName}} () {
+        return _list.get(_offset+{{index}});
+    }
