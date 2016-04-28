@@ -17,10 +17,13 @@ import java.util.List;
  */
 public class TemplateMaster {
 
-    public TemplateDescription fillTemplate(String arrayListSection, Object[] objects) {
-            TemplateDescription template = scanTemplate(arrayListSection);
-            System.out.println("Template: " + template);
-        return template;
+    public static TemplateDescription loadTemplate(String templateName) {
+        List<String> message = readResourceFile(templateName + ".mustache");
+
+        TemplateDescription templateDescription = new TemplateDescription();
+        templateDescription.fillData(message);
+
+        return templateDescription;
 
     }
 

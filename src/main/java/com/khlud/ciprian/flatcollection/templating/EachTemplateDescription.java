@@ -16,7 +16,7 @@ public class EachTemplateDescription  {
     private List<String> arguments;
 
     public void scan(String templateName){
-        templateDescription = TemplateMaster.scanTemplate(templateName);
+        templateDescription = TemplateMaster.loadTemplate(templateName);
     }
 
     public String buildTemplates(List<String> arguments, Map<String, Object> mappedArgs){
