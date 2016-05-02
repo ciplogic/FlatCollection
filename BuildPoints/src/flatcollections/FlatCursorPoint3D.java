@@ -18,7 +18,7 @@ public class FlatCursorPoint3D {
         move();
     }
 
-    public void indexSet(int pos){
+    public void setPosition(int pos){
       _offset = ItemCount*pos;
     }
 

@@ -1,0 +1,56 @@
+Parameters: packageName, typeName, valueType, countFields
+package {{packageName}};
+
+import java.util.Arrays;
+
+public class BuilderOf{{typeName}} {
+    {{valueType}}[] _data;
+    int _size;
+    int _capacity;
+
+    final static int ItemCount = {{countFields}};
+
+    public BuilderOf{{typeName}}() {
+        setCapacity(10);
+    }
+    public BuilderOf{{typeName}}(int capacity) {
+        setCapacity(capacity);
+    }
+
+    public void setCapacity(int newSize){
+        int capacity = newSize*ItemCount;
+        if(capacity <= 0) {
+            capacity = 10*ItemCount;
+        }
+        if(_data == null){
+            _data = new {{valueType}}[capacity];
+        }else {
+            _data = Arrays.copyOf(_data, capacity);
+        }
+        _capacity = newSize;
+    }
+
+    public void clear() {
+        _size = 0;
+    }
+
+    public void add({{valueType}} value){
+        _size ++;
+        if(_capacity < _size){
+            setCapacity(2*_capacity);
+        }
+        set(_size-1, value);
+    }
+
+    public void set(int index, {{valueType}} value){
+        _data[index]=value;
+    }
+
+    public {{valueType}} get(int index){
+        return _data[index];
+    }
+
+    public {{valueType}} toArray(){
+        return Arrays.copyOf(_data, _size);
+    }
+}
