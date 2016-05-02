@@ -27,9 +27,6 @@ public class TemplateDescription {
         return args;
     }
 
-
-
-
     public void fillData(List<String> message) {
         String firstRow = message.get(0);
         List<String> paramsComponent = StringUtils.split(firstRow, ':', false);
@@ -94,7 +91,6 @@ public class TemplateDescription {
     }
 
     public void setupEachTemplate(int i, String row) {
-        System.out.println(row);
         Map<String, String> dict = new HashMap<>();
         StringUtils.split(row, ';', false).stream()
                 .forEach(s -> {

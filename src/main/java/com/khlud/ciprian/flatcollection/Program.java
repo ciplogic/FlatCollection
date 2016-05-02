@@ -5,17 +5,12 @@
  */
 package com.khlud.ciprian.flatcollection;
 
-import com.khlud.ciprian.flatcollection.compiler.ReifiedCompiler;
-import com.khlud.ciprian.flatcollection.compiler.codeModel.ProgramModel;
+import com.khlud.ciprian.flatcollection.flat_handlers.FlatObjectListWriter;
 import com.khlud.ciprian.flatcollection.flat_handlers.FlatObjectToList;
-import com.khlud.ciprian.flatcollection.templating.TemplateDescription;
-import com.khlud.ciprian.flatcollection.templating.TemplateMaster;
-import com.khlud.ciprian.flatcollection.utils.OsUtils;
 import net.openhft.compiler.CompilerUtils;
 
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Ciprian
@@ -24,48 +19,12 @@ public class Program {
 
     public static void main(String[] args) throws Exception {
         List<String> fieldNames = Arrays.asList("X", "Y");
+        FlatObjectListWriter.writeFlatCollection("BuildPoints/src/flatcollections", "flatcollections", "Point3D", "int", fieldNames );
 
-        String renderedText = FlatObjectToList.writeFlatListCursor("FlatCollections", "Point3D", "int", fieldNames);
-        System.out.println(renderedText);
-        String renderedArrayText = FlatObjectToList.writeFlatArrayList("FlatCollections", "Point3D", "int", fieldNames.size());
-        System.out.println(renderedArrayText);
 
         //p.parseFlatFile();
         //p.runGeneratedCode();
         //runCompiler();
-    }
-/*
-    void parseMustache() throws IOException {
-        Map<String, Object> scopes = new HashMap<>();
-        scopes.put("name", "Mustache");
-        scopes.put("feature", new Feature("Perfect!"));
-
-        MustacheFactory mf = new DefaultMustacheFactory();
-        StringReader reader = new StringReader("{{name}}, {{feature.description}}!");
-        Mustache mustache = mf.compile(reader, "scopes");
-        StringWriter writer = new StringWriter();
-        mustache.execute(writer, scopes);
-        writer.flush();
-        String result = writer.getBuffer().toString();
-        System.out.println("Result:" + result);
-    }
-*/
-    void parseFlatFile() throws Exception {
-        ReifiedCompiler compiler = new ReifiedCompiler();
-        compiler.initialize();
-        String[] directoryFiles = OsUtils.getDirectoryFiles("./", true,
-                file -> file.getName().endsWith(".flat"));
-        Arrays.stream(directoryFiles).forEach(flatFile -> {
-            try {
-                compiler.parseFull(flatFile);
-            } catch (Exception ex) {
-                Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        );
-        ProgramModel programModel = compiler.programModel();
-        compiler.generateCode("FlatCollections", programModel);
-
     }
 
     void runGeneratedCode() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
