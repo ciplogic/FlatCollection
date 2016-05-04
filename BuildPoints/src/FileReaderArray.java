@@ -1,4 +1,4 @@
-import PrimitiveBuilders.ByteArrayBuider;
+import flatcollections.BuilderOfByte;
 
 import java.io.*;
 import java.util.stream.IntStream;
@@ -11,10 +11,10 @@ import java.util.stream.IntStream;
 class FileReaderArray {
     byte[] bytes;
     // Create the byte array to hold the data
-    ByteArrayBuider rowBytes = new ByteArrayBuider(120);
+    BuilderOfByte rowBytes = new BuilderOfByte();
 
     interface IOnRow {
-        void consume(ByteArrayBuider rowByte) throws UnsupportedEncodingException;
+        void consume(BuilderOfByte rowByte) throws UnsupportedEncodingException;
     }
     FileReaderArray (int _bufferLength) {
         bytes = new  byte[_bufferLength];

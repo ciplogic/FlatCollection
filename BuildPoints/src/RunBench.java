@@ -1,20 +1,6 @@
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.stream.IntStream;
 
-import static java.lang.System.out;
-
-/**
- * Created by Ciprian on 1/24/2016.
- */
-class Point2i { //8bytes
-    int x,y; //8 bytes
-}
-class Line { //8 bytes
-    Point2i begin =new Point2i(); //16  bytes
-    Point2i end=new Point2i(); // 16 bytes
-}
 
 public class RunBench {
 

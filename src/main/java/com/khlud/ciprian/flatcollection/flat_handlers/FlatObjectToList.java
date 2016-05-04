@@ -26,4 +26,21 @@ public class FlatObjectToList {
         String renderedText = templateDescription.renderObjectList(objectArgs);
         return renderedText;
     }
+    public static String writePrimitiveBuilder(String packageName, String className, String primitiveTypeName){
+
+        List<Object> objectArgs = Arrays.asList(packageName, className, primitiveTypeName);
+
+        TemplateDescription templateDescription = TemplateMaster.loadTemplate("codeSections/PrimitiveBuilder");
+        String renderedText = templateDescription.renderObjectList(objectArgs);
+        return renderedText;
+    }
+
+    public static String writePrimitiveBuilderIterator(String packageName, String className, String primitiveTypeName){
+
+        List<Object> objectArgs = Arrays.asList(packageName, className, primitiveTypeName);
+
+        TemplateDescription templateDescription = TemplateMaster.loadTemplate("codeSections/PrimitiveBuilderIterator");
+        String renderedText = templateDescription.renderObjectList(objectArgs);
+        return renderedText;
+    }
 }
