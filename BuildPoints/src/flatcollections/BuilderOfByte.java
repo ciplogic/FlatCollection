@@ -64,7 +64,7 @@ public class BuilderOfByte {
     }
 
     public void addRange(byte[] source, int start, int end) {
-        while (_size+(end-start+1)>= _size){
+        while (_size+(end-start+1)>= _capacity){
             doubleCapacity();
         }
         System.arraycopy(source, start, _data, _size, end-start);

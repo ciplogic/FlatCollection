@@ -89,7 +89,7 @@ class FileReaderArray {
 
                 int pos = 0;
                 while (pos < bytesRead) {
-                    byte eoln  = 10;
+                    byte eoln  = 13;
                     int nextPos = indexInArray(bytes, pos, bytesRead, eoln);
                     if (nextPos!= -1) {
                         rowBytes.addRange(bytes, pos, nextPos);
