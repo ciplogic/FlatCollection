@@ -18,10 +18,11 @@ import java.util.List;
 public class Program {
 
     public static void main(String[] args) throws Exception {
-        List<String> fieldNames = Arrays.asList("X", "Y");
-        FlatObjectListWriter.writeFlatCollection("BuildPoints/src/flatcollections", "flatcollections", "Point3D", "int", fieldNames );
         FlatObjectListWriter.writePrimitiveBuilder("BuildPoints/src/flatcollections", "flatcollections", "Byte", "byte");
+        FlatObjectListWriter.writePrimitiveBuilder("BuildPoints/src/flatcollections", "flatcollections", "Int", "int");
 
+        List<String> fieldNames = Arrays.asList("Start");
+        //FlatObjectListWriter.writeFlatCollection("BuildPoints/src/flatcollections", "flatcollections", "Token", "int", fieldNames );
 
         //p.parseFlatFile();
         //p.runGeneratedCode();

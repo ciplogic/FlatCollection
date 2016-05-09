@@ -3,7 +3,7 @@ package flatcollections;
 import java.util.Arrays;
 
 public class BuilderOfByte {
-    byte[] _data;
+    private byte[] _data;
     int _size;
     int _capacity;
 
@@ -28,11 +28,18 @@ public class BuilderOfByte {
         _capacity = newSize;
     }
 
+    public byte[] getData(){ return _data;}
+
     public void clear() {
         _size = 0;
     }
 
-    private void doubleCapacity() {
+    public int size() {
+        return _size;
+    }
+
+
+private void doubleCapacity() {
         int newCapacity = 2 * _capacity;
         setCapacity(newCapacity);
     }

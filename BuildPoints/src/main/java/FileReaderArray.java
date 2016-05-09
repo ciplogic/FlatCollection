@@ -12,6 +12,15 @@ class FileReaderArray {
     byte[] bytes;
     // Create the byte array to hold the data
     BuilderOfByte rowBytes = new BuilderOfByte();
+    private byte eoln = 13;
+
+    FileReaderArray() {
+        bytes = new  byte[4000];
+    }
+
+    public void setEoln(byte eoln) {
+        this.eoln = eoln;
+    }
 
     interface IOnRow {
         void consume(BuilderOfByte rowByte) throws UnsupportedEncodingException;
@@ -57,6 +66,8 @@ class FileReaderArray {
         }
         return result;
     }
+    
+    
     static String rangeBytesToString(byte[] data, int pos, int len){
         byte[] copy = new byte[len];
         IntStream.range(0, len).forEach(i->copy[i] = data[i+pos]);
@@ -75,8 +86,10 @@ class FileReaderArray {
         }
         return -1;
     }
+    
+    
 
-    void getBytesFromFile(InputStream fileInputStream, IOnRow onRow) throws IOException {
+    public void getBytesFromFile(InputStream fileInputStream, IOnRow onRow) throws IOException {
         // Read in the bytes
         rowBytes.clear();
 
@@ -89,7 +102,6 @@ class FileReaderArray {
 
                 int pos = 0;
                 while (pos < bytesRead) {
-                    byte eoln  = 13;
                     int nextPos = indexInArray(bytes, pos, bytesRead, eoln);
                     if (nextPos!= -1) {
                         rowBytes.addRange(bytes, pos, nextPos);

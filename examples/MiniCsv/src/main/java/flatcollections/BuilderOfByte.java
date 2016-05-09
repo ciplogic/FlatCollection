@@ -1,18 +1,17 @@
-Parameters: packageName, typeName, valueType
-package {{packageName}};
+package flatcollections;
 
 import java.util.Arrays;
 
-public class BuilderOf{{typeName}} {
-    {{valueType}}[] _data;
+public class BuilderOfByte {
+    private byte[] _data;
     int _size;
     int _capacity;
 
-    public BuilderOf{{typeName}}() {
+    public BuilderOfByte() {
         setCapacity(10);
     }
 
-    public BuilderOf{{typeName}}(int capacity) {
+    public BuilderOfByte(int capacity) {
     setCapacity(capacity);
     }
 
@@ -22,12 +21,14 @@ public class BuilderOf{{typeName}} {
             capacity = 10;
         }
         if(_data == null){
-            _data = new {{valueType}}[capacity];
+            _data = new byte[capacity];
         }else {
             _data = Arrays.copyOf(_data, capacity);
         }
         _capacity = newSize;
     }
+
+    public byte[] getData(){ return _data;}
 
     public void clear() {
         _size = 0;
@@ -43,7 +44,7 @@ private void doubleCapacity() {
         setCapacity(newCapacity);
     }
 
-    public void add({{valueType}} value){
+    public void add(byte value){
         _size ++;
         if(_capacity < _size){
             doubleCapacity();
@@ -51,25 +52,25 @@ private void doubleCapacity() {
         set(_size-1, value);
     }
 
-    public void set(int index, {{valueType}} value){
+    public void set(int index, byte value){
         _data[index]=value;
     }
 
-    public {{valueType}} get(int index){
+    public byte get(int index){
         return _data[index];
     }
 
-    public {{valueType}}[] toArray(){
+    public byte[] toArray(){
         return Arrays.copyOf(_data, _size);
     }
 
-    public void forEach(BuilderOf{{typeName}}Iterator acceptor) {
+    public void forEach(BuilderOfByteIterator acceptor) {
         for(int index = 0; index < _size; index++) {
             acceptor.accept(index, _data[index]);
         }
     }
 
-    public void addRange({{valueType}}[] source, int start, int end) {
+    public void addRange(byte[] source, int start, int end) {
         while (_size+(end-start+1)>= _capacity){
             doubleCapacity();
         }
