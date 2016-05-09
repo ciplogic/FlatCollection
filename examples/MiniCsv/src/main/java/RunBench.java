@@ -5,11 +5,7 @@ import java.util.stream.IntStream;
 public class RunBench {
 
     public static void main(String[] args) throws IOException {
-        FileReaderArray fileReaderArray = new FileReaderArray(500);
-        fileReaderArray.setEoln((byte) 10);
         int[] rows = {0};
-        RowTrackingState trackingState = new RowTrackingState();
-        trackingState.bSeparator = (byte) ',';
         try {
             CsvScanner csvScanner = new CsvScanner();
 
