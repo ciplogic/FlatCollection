@@ -18,7 +18,7 @@ public class RunBench {
         }
         long start = System.currentTimeMillis();
         int[] sum = new int[1];
-        IntStream.range(0, 10).forEach(i -> {
+        IntStream.range(0, 1).forEach(i -> {
             CsvScanner csvScanner = new CsvScanner();
             try {
 

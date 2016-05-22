@@ -55,7 +55,7 @@ public class PrimitiveFieldCollector {
         return resuStrings;
     }
 
-    private static List<Field> getFieldsAsList(Class fullType) {
+    public static List<Field> getFieldsAsList(Class fullType) {
         return Arrays.stream(fullType.getFields())
                 .collect(Collectors.toList());
     }

@@ -6,7 +6,6 @@
 package com.khlud.ciprian.flatcollection;
 
 import com.khlud.ciprian.flatcollection.flat_handlers.FlatObjectListWriter;
-import com.khlud.ciprian.flatcollection.flat_handlers.FlatObjectToList;
 import net.openhft.compiler.CompilerUtils;
 
 import java.util.Arrays;
@@ -21,12 +20,8 @@ public class Program {
         FlatObjectListWriter.writePrimitiveBuilder("BuildPoints/src/flatcollections", "flatcollections", "Byte", "byte");
         FlatObjectListWriter.writePrimitiveBuilder("BuildPoints/src/flatcollections", "flatcollections", "Int", "int");
 
-        List<String> fieldNames = Arrays.asList("Start");
-        //FlatObjectListWriter.writeFlatCollection("BuildPoints/src/flatcollections", "flatcollections", "Token", "int", fieldNames );
-
-        //p.parseFlatFile();
-        //p.runGeneratedCode();
-        //runCompiler();
+        List<String> fieldNames = Arrays.asList("Start", "End", "TokenType");
+        FlatObjectListWriter.writeFlatCollection("BuildPoints/src/flatcollections", "flatcollections", "Token", "int", fieldNames);
     }
 
     void runGeneratedCode() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
